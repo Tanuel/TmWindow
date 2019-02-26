@@ -1,0 +1,87 @@
+.tmWindow, .tmWindow * {
+    box-sizing: border-box;
+}
+
+.tmWindow {
+    position: fixed;
+    flex-direction: column;
+    border: 2px outset #aaa;
+    background: #ddd;
+    height: 300px;
+    width: 500px;
+    overflow: hidden;
+    box-shadow: 10px 10px 4px 2px hsla(0, 0%, 30%, 0.7);
+    resize: both;
+}
+
+.tmWindow-open {
+    display: flex;
+}
+
+.tmWindow-closed {
+    display: none;
+}
+
+.tmWindow-minimized {
+    height: auto;
+    box-shadow: none;
+    width: auto;
+    bottom: 0;
+}
+
+.tmWindow-grabbed {
+    opacity: 0.7;
+}
+
+.tmWindow-header {
+    flex: 0 0 2.5em;
+    border-bottom: 1px solid #bbb;
+    background-color: #ccc;
+    display: flex;
+    user-select: none;
+    cursor: -webkit-grab;
+    box-shadow: 0px 0px 10px 0px #555;
+}
+
+.tmWindow-grabbed .tmWindow-header {
+    cursor: -webkit-grabbing;
+}
+
+.tmWindow-title {
+    flex-grow: 1;
+    padding: 10px;
+}
+
+.tmWindow-content {
+    flex-grow: 1;
+    padding: 10px;
+    overflow: auto;
+    margin-bottom:10px;
+}
+
+.tmWindow-minimized .tmWindow-content {
+    display: none;
+}
+
+.tmWindow-btn {
+    padding: 10px;
+    height: 100%;
+    width: 36px;
+    cursor: pointer;
+    background-color: #ddd;
+    border: 1px outset #aaa;
+    outline: 0;
+}
+
+.tmWindow-btn:hover {
+    background-color: #ccc;
+    box-shadow: 0px 0px 1px 1px #888;
+}
+
+.tmWindow-btn-close:after {
+    content: 'X';
+}
+
+.tmWindow-btn-minimize:after {
+    content: '_';
+}

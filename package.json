@@ -1,0 +1,8 @@
+{
+  "name": "TmWindow",
+  "version": "1.0.0",
+  "description": "Library for in-site JavaScript windows",
+  "main": "index.js",
+  "author": "Tanuel",
+  "license": "MIT"
+}
