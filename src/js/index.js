@@ -1,0 +1,1 @@
+window.TmWindow = require('./tmwindow/tmwindow');

@@ -4,5 +4,13 @@
   "description": "Library for in-site JavaScript windows",
   "main": "index.js",
   "author": "Tanuel",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "watchify": "^3.11.1"
+  },
+  "scripts": {
+    "dev": "yarn browserify src/js/index.js -o public/js/TmWindow.js",
+    "watch": "yarn watchify src/js/index.js -o public/js/TmWindow.js"
+  }
 }
