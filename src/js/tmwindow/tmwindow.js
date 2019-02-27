@@ -3,7 +3,6 @@ let create = require("../var/create");
 let defaultOptions = require("./options");
 let tmwc = require('./css-class-map');
 
-
 class TmWindow {
     constructor(options = {}) {
         this._options = Object.assign({}, defaultOptions, options);
@@ -11,6 +10,7 @@ class TmWindow {
         // this._contentElement;
         // this._titleElement;
         this._domElement = this._buildWindow();
+        this.resizable = this._options.resizable;
         document.body.appendChild(this._domElement);
     }
 
@@ -45,6 +45,12 @@ class TmWindow {
 
     get title() {
         return this._titleElement.innerHTML;
+    }
+
+    set resizable(bool) {
+        this.setOption('resizable', bool);
+        let action = bool ? 'add' : 'remove';
+        this._domElement.classList[action](tmwc.resizable);
     }
 
     set width(width) {

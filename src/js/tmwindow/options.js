@@ -5,4 +5,6 @@ module.exports = {
     'style' : {},
     //Window title
     'title': '',
+    //Test if the window is resizable
+    'resizable': true,
 };

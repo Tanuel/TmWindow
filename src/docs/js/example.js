@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function(){
     let tmw = new TmWindow();
+    tmw.open();
     let openBtn = document.getElementById('open-window');
     openBtn.addEventListener('click', tmw.open.bind(tmw));
 
@@ -9,4 +10,6 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('apply-window-content').addEventListener('click', function(){
        tmw.content = document.getElementById('set-window-content').value;
     });
+
+    window.tmw = tmw;
 });

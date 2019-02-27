@@ -1,0 +1,19 @@
+.#{$wrapper} {
+  box-sizing: border-box;
+  position: fixed;
+  flex-direction: column;
+  border: 2px outset $color-wrapper;
+  background: $color-content;
+  height: 300px;
+  width: 500px;
+  overflow: hidden;
+  box-shadow: 10px 10px 4px 2px $color-shadow;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  &-resizable {
+    resize: both;
+  }
+}

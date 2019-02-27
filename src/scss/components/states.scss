@@ -1,0 +1,30 @@
+.#{$wrapper} {
+  &-open {
+    display: flex;
+  }
+
+  &-closed {
+    display: none;
+  }
+
+  &-minimized {
+    height: auto;
+    box-shadow: none;
+    width: auto;
+    bottom: 0;
+
+    .#{$wrapper}-content {
+      display:none;
+    }
+  }
+
+  &-grabbed {
+    opacity: 0.7;
+
+    .#{$wrapper}-header {
+      cursor: -webkit-grabbing;
+    }
+  }
+
+
+}
