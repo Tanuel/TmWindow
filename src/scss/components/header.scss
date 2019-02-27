@@ -1,23 +1,24 @@
 .#{$wrapper} {
   &-header {
-    flex: 0 0 2.5em;
+    flex: 0 0 2em;
     border-bottom: 1px solid darken($color-header, 20%);
     background-color: $color-header;
+    color: $color-header-font;
     display: flex;
     user-select: none;
     cursor: -webkit-grab;
-    box-shadow: 0px 0px 10px 0px darken($color-header, 20%);
+    box-shadow: 0 0 10px 0 darken($color-header, 20%);
 
     .#{$wrapper} {
       &-title {
         flex-grow: 1;
-        padding: 10px;
+        padding: 0.5em;
       }
 
       &-btn {
-        padding: 10px;
+        padding: 0.5em;
         height: 100%;
-        width: 36px;
+        width: 2em;
         cursor: pointer;
         background-color: lighten($color-header, 5%);
         border: 2px outset darken($color-header, 5%);
