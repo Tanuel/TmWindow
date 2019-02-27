@@ -6,7 +6,7 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         src: 'src',
         dst: 'dist',
-        bin: 'bin',
+        dev: 'dev',
         docs: 'public',
         projectName: 'TmWindow',
         clean: {
@@ -16,19 +16,26 @@ module.exports = function (grunt) {
             docs: {
                 src: ['<%=docs%>/*']
             },
-            bin: {
-                src: ['<%=bin%>/*']
+            dev: {
+                src: ['<%=dev%>/*']
             }
         },
         browserify: {
-            vendor: {
+            options: {
+                browserifyOptions: {
+                    standalone: '<%=projectName%>',
+                },
+            },
+            dev: {
                 options: {
                     browserifyOptions: {
                         debug: true,
                     },
                 },
-                src: '<%=src%>/js/index.js',
-                dest: 'public/js/<%=projectName%>/*.js',
+                files: {
+                    '<%=dev%>/js/<%=projectName%>.js': '<%=src%>/js/index.js',
+                    '<%=dev%>/js/example.js':'<%=src%>/docs/js/example.js'
+                },
             },
             docs: {
                 files: {
@@ -44,17 +51,22 @@ module.exports = function (grunt) {
         sass: {
             options: {
                 implementation: nodeSass,
-                sourceMap: false
+                sourceMap: true,
             },
-            vendor: {
+            dev: {
                 options: {
-                    sourceMap: true
+                    outputStyle: 'expanded',
                 },
                 files: {
-                    'public/css/<%=projectName%>.css': '<%=src%>/scss/main.scss',
+                    '<%=dev%>/css/<%=projectName%>.css': '<%=src%>/scss/main.scss',
+                    '<%=dev%>/css/docs.css': '<%=src%>/docs/scss/docs.scss',
                 },
             },
             docs: {
+                options: {
+                    sourceMap: false,
+                    outputStyle: 'compressed',
+                },
                 files: {
                     '<%=docs%>/css/<%=projectName%>.css': '<%=src%>/scss/main.scss',
                     '<%=docs%>/css/docs.css': '<%=src%>/docs/scss/docs.scss',
@@ -71,12 +83,17 @@ module.exports = function (grunt) {
                 files: {
                     '<%=docs%>/index.html': '<%=src%>/docs/index.html'
                 }
+            },
+            dev: {
+                files: {
+                    '<%=dev%>/index.html': '<%=src%>/docs/index.html'
+                }
             }
         },
         watch: {
             dev: {
-                files: ['<%=src%>/**/*.js', '<%=src%>/**/*.scss'],
-                tasks: ['dev']
+                files: ['<%=src%>/**/*'],
+                tasks: ['build:dev']
             }
         }
     });
@@ -88,18 +105,19 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-sass');
 
     // Default task(s).
-    grunt.registerTask('dev', [
-        'clean:docs',
-        'browserify:docs',
-        'sass:docs',
+    grunt.registerTask('build:dev', [
+        'clean:dev',
+        'browserify:dev',
+        'sass:dev',
+        'copy:dev',
     ]);
 
-    grunt.registerTask('buildDist', [
+    grunt.registerTask('build:dist', [
         'browserify:dist',
         'sass:dist',
     ]);
 
-    grunt.registerTask('buildDocs', [
+    grunt.registerTask('build:docs', [
         'clean:docs',
         'browserify:docs',
         'sass:docs',
@@ -107,8 +125,6 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build', [
-        'clean:dist',
-        'browserify:dist',
-        'sass:dist'
+        'build:docs',
     ]);
 };

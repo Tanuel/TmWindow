@@ -11,7 +11,7 @@ pages:
     - npm prune
     - npm install
     - npm install -g grunt-cli
-    - grunt buildDocs
+    - grunt build
 
   artifacts:
     paths:
