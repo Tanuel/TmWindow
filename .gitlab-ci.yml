@@ -1,0 +1,21 @@
+image: node:latest
+
+pages:
+  stage: deploy
+
+  cache:
+    paths:
+      - node_modules/
+
+  script:
+    - npm prune
+    - npm install
+    - npm install -g grunt-cli
+    - grunt buildDocs
+
+  artifacts:
+    paths:
+      - public
+
+  only:
+    - master

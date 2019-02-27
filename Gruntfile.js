@@ -7,7 +7,7 @@ module.exports = function (grunt) {
         src: 'src',
         dst: 'dist',
         bin: 'bin',
-        docs: 'build',
+        docs: 'public',
         projectName: 'TmWindow',
         clean: {
             dist: {
