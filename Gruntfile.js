@@ -34,13 +34,13 @@ module.exports = function (grunt) {
                 },
                 files: {
                     '<%=dev%>/js/<%=projectName%>.js': '<%=src%>/js/index.js',
-                    '<%=dev%>/js/example.js':'<%=src%>/docs/js/example.js'
+                    '<%=dev%>/js/example.js': '<%=src%>/docs/js/example.js'
                 },
             },
             docs: {
                 files: {
                     '<%=docs%>/js/<%=projectName%>.js': '<%=src%>/js/index.js',
-                    '<%=docs%>/js/example.js':'<%=src%>/docs/js/example.js'
+                    '<%=docs%>/js/example.js': '<%=src%>/docs/js/example.js'
                 },
             },
             dist: {
@@ -93,13 +93,27 @@ module.exports = function (grunt) {
         watch: {
             dev: {
                 files: ['<%=src%>/**/*'],
-                tasks: ['build:dev']
-            }
-        }
+                tasks: ['build:dev'],
+                options: {
+                    livereload: true,
+                },
+            },
+        },
+        connect: {
+            dev: {
+                options: {
+                    port: 9001,
+                    base: '<%=dev%>',
+                    livereload: true,
+                    open: true,
+                },
+            },
+        },
     });
 
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-sass');
@@ -110,6 +124,12 @@ module.exports = function (grunt) {
         'browserify:dev',
         'sass:dev',
         'copy:dev',
+    ]);
+
+    grunt.registerTask('serve:dev', [
+        'build:dev',
+        'connect:dev',
+        'watch:dev',
     ]);
 
     grunt.registerTask('build:dist', [
