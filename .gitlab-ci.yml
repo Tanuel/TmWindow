@@ -9,8 +9,8 @@ pages:
 
   script:
     - npm prune
-    - npm install
-    - npm install -g grunt-cli
+    - npm install -g yarn grunt-cli
+    - yarn install
     - grunt build
 
   artifacts:
