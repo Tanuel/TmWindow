@@ -4,15 +4,15 @@ import {cssMap} from "./css-class-map";
 import {defaultOptions, IOptions} from "./options";
 
 interface IMouseDownEventPositions {
-    x?;
-    y?;
-    left?;
-    top?;
+    x?: number;
+    y?: number;
+    left?: number;
+    top?: number;
 }
 
 export default class TmWindow {
     public readonly domElement: HTMLElement;
-    private options: IOptions;
+    private readonly options: IOptions;
     private headerElement: HTMLElement;
     private titleElement: HTMLElement;
     private contentElement: HTMLElement;
@@ -41,8 +41,7 @@ export default class TmWindow {
         return this.titleElement.innerHTML;
     }
 
-    set title(title) {
-        this.titleElement.innerHTML = title;
+    set title(title: string) {
         this.setOption("title", title);
     }
 
@@ -65,6 +64,16 @@ export default class TmWindow {
     public setOption(name: string, value: any) {
         if (name in this.options) {
             (this.options as any)[name] = value;
+        }
+        switch (name) {
+            case "title":
+                this.titleElement.innerHTML = value;
+                break;
+            case "resizable":
+                this.domElement.classList.toggle(cssMap.resizable, Boolean(value));
+                break;
+            default:
+                break;
         }
     }
 
@@ -118,9 +127,9 @@ export default class TmWindow {
             };
             de.classList.remove(cssMap.wrapperOpen);
             de.classList.add(cssMap.wrapperMinimized);
-            de.style.top = "";
-            de.style.left = "";
             de.style.height = "";
+            de.style.left = "";
+            de.style.top = "";
             de.style.width = "";
         } else {
             this.open();
@@ -137,6 +146,9 @@ export default class TmWindow {
         const content = this.contentElement = this._buildContent();
 
         wrapper.className = cssMap.wrapper + " " + cssMap.wrapperClosed;
+        if (this.options.resizable) {
+            wrapper.classList.add(cssMap.resizable);
+        }
         wrapper.appendChild(header);
         wrapper.appendChild(content);
         wrapper.style.top = "10px";
