@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "target": "ES6"
+  },
+  "files": [
+    "src/ts/global.ts",
+    "src/ts/module.ts"
+  ]
+}
