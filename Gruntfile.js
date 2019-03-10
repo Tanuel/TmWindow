@@ -22,8 +22,8 @@ module.exports = function (grunt) {
         },
         browserify: {
             options: {
-                browserifyOptions: {
-                    standalone: '<%=projectName%>',
+                configure: function (bundler) {
+                    bundler.plugin(require('tsify'));
                 },
             },
             dev: {
@@ -33,19 +33,25 @@ module.exports = function (grunt) {
                     },
                 },
                 files: {
-                    '<%=dev%>/js/<%=projectName%>.js': '<%=src%>/js/index.js',
+                    '<%=dev%>/js/<%=projectName%>.js': '<%=src%>/ts/global.ts',
                     '<%=dev%>/js/example.js': '<%=src%>/docs/js/example.js'
                 },
             },
             docs: {
                 files: {
-                    '<%=docs%>/js/<%=projectName%>.js': '<%=src%>/js/index.js',
+                    '<%=docs%>/js/<%=projectName%>.js': '<%=src%>/ts/global.ts',
                     '<%=docs%>/js/example.js': '<%=src%>/docs/js/example.js'
                 },
             },
             dist: {
-                src: '<%=src%>/js/index.js',
-                dest: '<%=dist%>/*/js/<%=projectName%>/*.js'
+                files: {
+                    '<%=dst%>/js/<%=projectName%>.js': '<%=src%>/ts/module.ts'
+                },
+                options: {
+                    browserifyOptions: {
+                        standalone: 'TmWindowStandalone',
+                    },
+                },
             },
         },
         sass: {
@@ -74,7 +80,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
-                    '<%=dist%>/*/css/<%=projectName%>/*.css': '<%=src%>/scss/main.scss',
+                    '<%=dst%>/css/<%=projectName%>.css': '<%=src%>/scss/main.scss',
                 }
             }
         },
@@ -130,6 +136,9 @@ module.exports = function (grunt) {
         'build:dev',
         'connect:dev',
         'watch:dev',
+    ]);
+    grunt.registerTask('serve', [
+        'serve:dev',
     ]);
 
     grunt.registerTask('build:dist', [

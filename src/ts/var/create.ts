@@ -1,3 +1,3 @@
-module.exports = function(name){
+export default function create(name: string){
     return window.document.createElement(name);
 }

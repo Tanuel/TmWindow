@@ -1,16 +1,27 @@
-let clearSelection = require("../var/clearSelection");
-let create = require("../var/create");
-let defaultOptions = require("./options");
-let tmwc = require('./css-class-map');
+import clearSelection from '../var/clearSelection';
+import create from  '../var/create';
+import {optionsType, defaultOptions} from './options';
+import {cssMap} from './css-class-map';
 
-class TmWindow {
+interface MouseDownEventPositions {
+    x?,
+    y?,
+    left?,
+    top?,
+}
+
+export default class TmWindow {
+    readonly _domElement: HTMLElement;
+    private options: optionsType;
+    private headerElement: HTMLElement;
+    private titleElement: HTMLElement;
+    private contentElement: HTMLElement;
+    private lastStyle: any;
+    private mouseDownEv: MouseDownEventPositions;
+
     constructor(options = {}) {
-        this._options = Object.assign({}, defaultOptions, options);
-        // this._headerElement;
-        // this._contentElement;
-        // this._titleElement;
+        this.options = {...defaultOptions, ...options};
         this._domElement = this._buildWindow();
-        this.resizable = this._options.resizable;
         document.body.appendChild(this._domElement);
     }
 
@@ -18,139 +29,137 @@ class TmWindow {
         return this._domElement;
     }
 
-    setOption(name, value) {
-        this._options[name] = value;
-    }
-
-    getOption(name) {
-        return this._options[name] || '';
-    }
-
     get isOpen() {
-        return this._domElement.classList.contains(tmwc.wrapperOpen);
+        return this._domElement.classList.contains(cssMap.wrapperOpen);
     }
 
     get isClosed() {
-        return this._domElement.classList.contains(tmwc.wrapperClosed);
+        return this._domElement.classList.contains(cssMap.wrapperClosed);
     }
 
     get isMinimized() {
-        return this._domElement.classList.contains(tmwc.wrapperMinimized);
-    }
-
-    set title(title) {
-        this._titleElement.innerHTML = title;
-        this.setOption('title', title);
+        return this._domElement.classList.contains(cssMap.wrapperMinimized);
     }
 
     get title() {
-        return this._titleElement.innerHTML;
+        return this.titleElement.innerHTML;
     }
 
-    set resizable(bool) {
-        this.setOption('resizable', bool);
-        let action = bool ? 'add' : 'remove';
-        this._domElement.classList[action](tmwc.resizable);
+    set title(title) {
+        this.titleElement.innerHTML = title;
+        this.setOption('title', title);
     }
 
-    set width(width) {
+    set width(width: number) {
         this._domElement.style.width = width + 'px';
     }
 
-    set x(x) {
+    set x(x: number) {
         this._domElement.style.left = x + 'px';
     }
 
-    set y(y) {
+    set y(y: number) {
         this._domElement.style.top = y + 'px';
     }
 
-    set content(content) {
-        this._contentElement.innerHTML = content;
+    set content(content: any) {
+        this.contentElement.innerHTML = content;
     }
 
-    appendElement(element) {
-        this._contentElement.appendChild(element);
+    public setOption(name: string, value: any) {
+        if (name in this.options)
+            (this.options as any)[name] = value;
     }
 
-    setPosition(x, y) {
+    public getOption(name: string) {
+        return name in this.options ? (this.options as any)[name] : '';
+    }
+
+    public appendElement(element: HTMLElement) {
+        this.contentElement.appendChild(element);
+    }
+
+    public setPosition(x: number, y: number) {
         this._domElement.style.left = x + 'px';
         this._domElement.style.top = y + 'px';
     }
 
-    open() {
+    public open() {
         let de = this._domElement;
-        if (this.isMinimized) {
-            Object.assign(de.style, this.lastStyles);
+        if (this.isMinimized && typeof this.lastStyle === "object") {
+            for (let k in this.lastStyle) {
+                de.style[k] = this.lastStyle[k];
+            }
         }
-        de.classList.remove(tmwc.wrapperClosed, tmwc.wrapperMinimized);
-        de.classList.add(tmwc.wrapperOpen);
+        de.classList.remove(cssMap.wrapperClosed, cssMap.wrapperMinimized);
+        de.classList.add(cssMap.wrapperOpen);
     }
 
-    close(event) {
+    public close(event) {
         if (this.getOption('destroyOnClose')) {
             this.destroy();
             event.stopImmediatePropagation();
         } else {
-            this._domElement.classList.remove(tmwc.wrapperOpen);
-            this._domElement.classList.add(tmwc.wrapperClosed);
+            this._domElement.classList.remove(cssMap.wrapperOpen);
+            this._domElement.classList.add(cssMap.wrapperClosed);
         }
     }
 
-    destroy() {
+    public destroy() {
         this._domElement.parentNode.removeChild(this._domElement);
     }
 
-    minimize() {
+    public minimize() {
         if (this.isOpen) {
             let de = this._domElement;
             let rect = de.getBoundingClientRect();
-            this.lastStyles = {
+            this.lastStyle = {
                 top: rect.top + "px",
                 left: rect.left + "px",
                 height: rect.height + "px",
                 width: rect.width + "px"
             };
-            de.classList.remove(tmwc.wrapperOpen);
-            de.classList.add(tmwc.wrapperMinimized);
-            Object.assign(de.style, {
-                top: "",
-                left: "",
-                height: "",
-                width: ""
-            });
+            de.classList.remove(cssMap.wrapperOpen);
+            de.classList.add(cssMap.wrapperMinimized);
+            de.style.top = '';
+            de.style.left = '';
+            de.style.height = '';
+            de.style.width = '';
         } else {
             this.open();
         }
     }
 
-    reappend() {
+    public reappend() {
         document.body.appendChild(this._domElement);
     }
 
-    _buildWindow() {
+    private _buildWindow() {
         const wrapper = create("div"),
-            header = this._headerElement = this._buildHeader(),
-            content = this._contentElement = this._buildContent();
+            header = this.headerElement = this._buildHeader(),
+            content = this.contentElement = this._buildContent();
 
-        wrapper.className = tmwc.wrapper + " " + tmwc.wrapperClosed;
+        wrapper.className = cssMap.wrapper + " " + cssMap.wrapperClosed;
         wrapper.appendChild(header);
         wrapper.appendChild(content);
         wrapper.style.top = "10px";
         wrapper.style.left = "10px";
-        Object.assign(wrapper.style, this.getOption("style"));
+        let styles = Object.keys(this.options.style);
+        for (let key in styles) {
+            wrapper.style[key] = this.options.style[key];
+        }
 
         wrapper.addEventListener("click", this.reappend.bind(this));
         return wrapper;
     }
 
-    _buildHeader() {
+    private _buildHeader() {
         //_headerElement element
         const header = create("div");
-        header.className = tmwc.header;
+        header.className = cssMap.header;
         //title element
-        const title = this._titleElement = create("div");
-        title.className = tmwc.title;
+        const title = this.titleElement = create("div");
+        title.className = cssMap.title;
         title.innerHTML = this.getOption("title");
         this._addRepositionEvent(title);
         //buttons
@@ -162,21 +171,21 @@ class TmWindow {
         return header;
     }
 
-    _buildHeaderButtons() {
+    private _buildHeaderButtons() {
         const wrap = create("div");
-        wrap.className = tmwc.headerButtons;
+        wrap.className = cssMap.headerButtons;
 
         //close button
-        const btnClose = this._buildButton(tmwc.btnClose, this.close.bind(this));
+        const btnClose = this._buildButton(cssMap.btnClose, this.close.bind(this));
         wrap.appendChild(btnClose);
 
         //minimize button
-        const btnMin = this._buildButton(tmwc.btnMinimize, this.minimize.bind(this));
+        const btnMin = this._buildButton(cssMap.btnMinimize, this.minimize.bind(this));
         wrap.appendChild(btnMin);
         return wrap;
     }
 
-    _buildButton(className, callback) {
+    private _buildButton(className, callback) {
         const btn = create("button");
         btn.tabIndex = -1;
         btn.className = className;
@@ -184,17 +193,17 @@ class TmWindow {
         return btn;
     }
 
-    _buildContent() {
+    private _buildContent() {
         const content = create("div");
-        content.className = tmwc.content;
+        content.className = cssMap.content;
         content.innerHTML = this.getOption("content");
         return content;
     }
 
-    _addRepositionEvent(el) {
+    private _addRepositionEvent(el) {
         //const repo = function(e){console.log(e);};
         const repo = this._repositionEvent.bind(this);
-        let md = this._mouseDownEv = {};
+        let md = this.mouseDownEv = <MouseDownEventPositions>{};
         let _this = this;
 
         el.addEventListener("mousedown", function (event) {
@@ -208,22 +217,22 @@ class TmWindow {
             const rect = _this._domElement.getBoundingClientRect();
             md.top = rect.top;
             md.left = rect.left;
-            _this._domElement.classList.add(tmwc.grabbed);
+            _this._domElement.classList.add(cssMap.grabbed);
             window.addEventListener("mousemove", repo);
         });
 
         window.addEventListener("mouseup", function () {
-            _this._domElement.classList.remove(tmwc.grabbed);
+            _this._domElement.classList.remove(cssMap.grabbed);
             window.removeEventListener("mousemove", repo);
         });
         document.addEventListener("mouseleave", function () {
-            _this._domElement.classList.remove(tmwc.grabbed);
+            _this._domElement.classList.remove(cssMap.grabbed);
             window.removeEventListener("mousemove", repo);
         });
     }
 
-    _repositionEvent(ev) {
-        const md = this._mouseDownEv,
+    private _repositionEvent(ev) {
+        const md = this.mouseDownEv,
             dx = ev.pageX - md.x,
             dy = ev.pageY - md.y,
             newX = md.left + dx,
@@ -239,5 +248,3 @@ class TmWindow {
         }
     }
 }
-
-module.exports = TmWindow;
