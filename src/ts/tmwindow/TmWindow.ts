@@ -248,10 +248,14 @@ export default class TmWindow {
         const de = this.domElement;
         const rect = de.getBoundingClientRect();
 
-        if (newX > 0 && (newX + rect.width) < window.innerWidth) {
+        // check if we should contain the element in the window
+        if (!this.options.contain
+            || newX > 0 && (newX + rect.width) < window.innerWidth) {
             de.style.left = newX + "px";
         }
-        if (newY > 0 && (newY + rect.height) < window.innerHeight) {
+
+        if (!this.options.contain
+            || newY > 0 && (newY + rect.height) < window.innerHeight) {
             de.style.top = newY + "px";
         }
     }
