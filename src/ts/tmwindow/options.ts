@@ -1,20 +1,31 @@
-export interface IOptions {
-    contain: boolean;
-    destroyOnClose: boolean;
-    resizable: boolean;
-    style: object;
-    title: string;
+export interface ITmWindowOptions {
+    /**
+     * Contain the wrapper element in the window
+     */
+    contain?: boolean;
+    /**
+     *  remove element from dom when close method gets called
+     */
+    destroyOnClose?: boolean;
+    /**
+     *  Make the window resizable (true) or fixed (false)
+     */
+    resizable?: boolean;
+    /**
+     *  Custom styles
+     */
+    style?: object;
+    /**
+     *  Window title
+     */
+    title?: string;
 }
 
-const defaultOptions: IOptions = {
+const defaultOptions: ITmWindowOptions = {
     contain: true,
-    // remove element from dom when close method gets called
     destroyOnClose: false,
-    // Test if the window is resizable
     resizable: true,
-    // custom styles
     style : {},
-    // Window title
     title: "",
 };
 

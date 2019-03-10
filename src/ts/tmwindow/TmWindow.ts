@@ -1,7 +1,7 @@
 import clearSelection from "../var/clearSelection";
 import create from "../var/create";
 import {cssMap} from "./css-class-map";
-import {defaultOptions, IOptions} from "./options";
+import {defaultOptions, ITmWindowOptions} from "./options";
 
 interface IMouseDownEventPositions {
     x?: number;
@@ -12,14 +12,14 @@ interface IMouseDownEventPositions {
 
 export default class TmWindow {
     public readonly domElement: HTMLElement;
-    private readonly options: IOptions;
+    private readonly options: ITmWindowOptions;
     private headerElement: HTMLElement;
     private titleElement: HTMLElement;
     private contentElement: HTMLElement;
     private lastStyle: any;
     private mouseDownEv: IMouseDownEventPositions;
 
-    constructor(options = {}) {
+    constructor(options: ITmWindowOptions = {}) {
         this.options = {...defaultOptions, ...options};
         this.domElement = this._buildWindow();
         document.body.appendChild(this.domElement);
@@ -70,7 +70,7 @@ export default class TmWindow {
                 this.titleElement.innerHTML = value;
                 break;
             case "resizable":
-                this.domElement.classList.toggle(cssMap.resizable, Boolean(value));
+                this.domElement.classList.toggle(cssMap.resizable, !!value);
                 break;
             default:
                 break;
