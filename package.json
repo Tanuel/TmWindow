@@ -16,11 +16,11 @@
     "grunt-sass": "^3.0.2",
     "node-sass": "^4.11.0",
     "tsify": "^4.0.1",
+    "tslint": "^5.13.1",
     "typescript": "^3.3.3333",
     "watchify": "^3.11.1"
   },
   "scripts": {
-    "dev": "yarn browserify src/js/index.js -o public/js/TmWindow.js",
-    "watch": "yarn watchify src/js/index.js -o public/js/TmWindow.js"
+    "lint": "tslint --project ./"
   }
 }
