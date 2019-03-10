@@ -1,4 +1,4 @@
-import TmWindow from "./tmwindow/tmwindow";
+import TmWindow from "./tmwindow/TmWindow";
 
 declare global {
     // tslint:disable-next-line:interface-name
