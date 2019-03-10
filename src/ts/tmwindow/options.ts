@@ -1,19 +1,19 @@
-export type optionsType = {
-    destroyOnClose: boolean,
-    style: object,
-    title: string,
-    resizable: boolean
+export interface IOptions {
+    destroyOnClose: boolean;
+    resizable: boolean;
+    style: object;
+    title: string;
 }
 
-const defaultOptions: optionsType = {
-    //remove element from dom when close method gets called
-    'destroyOnClose': false,
-    //custom styles
-    'style' : {},
-    //Window title
-    'title': '',
-    //Test if the window is resizable
-    'resizable': true,
+const defaultOptions: IOptions = {
+    // remove element from dom when close method gets called
+    destroyOnClose: false,
+    // Test if the window is resizable
+    resizable: true,
+    // custom styles
+    style : {},
+    // Window title
+    title: "",
 };
 
 export {defaultOptions};

@@ -1,47 +1,47 @@
-export interface cssMapInterface {
-    wrapper: string,
-    wrapperOpen: string,
-    wrapperClosed: string,
-    wrapperMinimized: string,
-    resizable: string,
-    grabbed: string,
-    header: string,
-    title: string,
-    headerButtons: string,
-    content: string,
-    btn: string,
-    btnClose: string,
-    btnMinimize: string,
+export interface ICssMap {
+    btn: string;
+    btnClose: string;
+    btnMinimize: string;
+    content: string;
+    grabbed: string;
+    header: string;
+    headerButtons: string;
+    resizable: string;
+    title: string;
+    wrapper: string;
+    wrapperClosed: string;
+    wrapperOpen: string;
+    wrapperMinimized: string;
 }
 
-let wrapper = "tmWindow";
-let wrapperOpen = wrapper + "-open";
-let wrapperClosed = wrapper + "-closed";
-let wrapperMinimized = wrapper + "-minimized";
-let resizable = wrapper + '-resizable';
-let grabbed = wrapper + "-grabbed";
-let header = wrapper + "-header";
-let title = wrapper + "-title";
-let headerButtons = wrapper + "-buttons";
-let content = wrapper + "-content";
-let btn = wrapper + "-btn";
-let btnClose = btn + ' ' + wrapper + "-btn-close";
-let btnMinimize = btn + ' ' + wrapper + "-btn-minimize";
+const wrapper = "tmWindow";
+const wrapperOpen = wrapper + "-open";
+const wrapperClosed = wrapper + "-closed";
+const wrapperMinimized = wrapper + "-minimized";
+const resizable = wrapper + "-resizable";
+const grabbed = wrapper + "-grabbed";
+const header = wrapper + "-header";
+const title = wrapper + "-title";
+const headerButtons = wrapper + "-buttons";
+const content = wrapper + "-content";
+const btn = wrapper + "-btn";
+const btnClose = btn + " " + wrapper + "-btn-close";
+const btnMinimize = btn + " " + wrapper + "-btn-minimize";
 
-const cssMap: cssMapInterface = {
-    wrapper,
-    wrapperOpen,
-    wrapperClosed,
-    wrapperMinimized,
-    resizable,
-    grabbed,
-    header,
-    title,
-    headerButtons,
-    content,
+const cssMap: ICssMap = {
     btn,
     btnClose,
     btnMinimize,
+    content,
+    grabbed,
+    header,
+    headerButtons,
+    resizable,
+    title,
+    wrapper,
+    wrapperClosed,
+    wrapperMinimized,
+    wrapperOpen,
 };
 
-export {cssMap}
+export {cssMap};

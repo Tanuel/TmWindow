@@ -1,3 +1,3 @@
-import TmWindow from './tmwindow/tmwindow';
+import TmWindow from "./tmwindow/tmwindow";
 
-export default TmWindow
+export default TmWindow;

@@ -1,44 +1,40 @@
-import clearSelection from '../var/clearSelection';
-import create from  '../var/create';
-import {optionsType, defaultOptions} from './options';
-import {cssMap} from './css-class-map';
+import clearSelection from "../var/clearSelection";
+import create from "../var/create";
+import {cssMap} from "./css-class-map";
+import {defaultOptions, IOptions} from "./options";
 
-interface MouseDownEventPositions {
-    x?,
-    y?,
-    left?,
-    top?,
+interface IMouseDownEventPositions {
+    x?;
+    y?;
+    left?;
+    top?;
 }
 
 export default class TmWindow {
-    readonly _domElement: HTMLElement;
-    private options: optionsType;
+    public readonly domElement: HTMLElement;
+    private options: IOptions;
     private headerElement: HTMLElement;
     private titleElement: HTMLElement;
     private contentElement: HTMLElement;
     private lastStyle: any;
-    private mouseDownEv: MouseDownEventPositions;
+    private mouseDownEv: IMouseDownEventPositions;
 
     constructor(options = {}) {
         this.options = {...defaultOptions, ...options};
-        this._domElement = this._buildWindow();
-        document.body.appendChild(this._domElement);
-    }
-
-    get domElement() {
-        return this._domElement;
+        this.domElement = this._buildWindow();
+        document.body.appendChild(this.domElement);
     }
 
     get isOpen() {
-        return this._domElement.classList.contains(cssMap.wrapperOpen);
+        return this.domElement.classList.contains(cssMap.wrapperOpen);
     }
 
     get isClosed() {
-        return this._domElement.classList.contains(cssMap.wrapperClosed);
+        return this.domElement.classList.contains(cssMap.wrapperClosed);
     }
 
     get isMinimized() {
-        return this._domElement.classList.contains(cssMap.wrapperMinimized);
+        return this.domElement.classList.contains(cssMap.wrapperMinimized);
     }
 
     get title() {
@@ -47,19 +43,19 @@ export default class TmWindow {
 
     set title(title) {
         this.titleElement.innerHTML = title;
-        this.setOption('title', title);
+        this.setOption("title", title);
     }
 
     set width(width: number) {
-        this._domElement.style.width = width + 'px';
+        this.domElement.style.width = width + "px";
     }
 
     set x(x: number) {
-        this._domElement.style.left = x + 'px';
+        this.domElement.style.left = x + "px";
     }
 
     set y(y: number) {
-        this._domElement.style.top = y + 'px';
+        this.domElement.style.top = y + "px";
     }
 
     set content(content: any) {
@@ -67,12 +63,13 @@ export default class TmWindow {
     }
 
     public setOption(name: string, value: any) {
-        if (name in this.options)
+        if (name in this.options) {
             (this.options as any)[name] = value;
+        }
     }
 
     public getOption(name: string) {
-        return name in this.options ? (this.options as any)[name] : '';
+        return name in this.options ? (this.options as any)[name] : "";
     }
 
     public appendElement(element: HTMLElement) {
@@ -80,14 +77,14 @@ export default class TmWindow {
     }
 
     public setPosition(x: number, y: number) {
-        this._domElement.style.left = x + 'px';
-        this._domElement.style.top = y + 'px';
+        this.domElement.style.left = x + "px";
+        this.domElement.style.top = y + "px";
     }
 
     public open() {
-        let de = this._domElement;
+        const de = this.domElement;
         if (this.isMinimized && typeof this.lastStyle === "object") {
-            for (let k in this.lastStyle) {
+            for (const k in this.lastStyle) {
                 de.style[k] = this.lastStyle[k];
             }
         }
@@ -96,56 +93,56 @@ export default class TmWindow {
     }
 
     public close(event) {
-        if (this.getOption('destroyOnClose')) {
+        if (this.getOption("destroyOnClose")) {
             this.destroy();
             event.stopImmediatePropagation();
         } else {
-            this._domElement.classList.remove(cssMap.wrapperOpen);
-            this._domElement.classList.add(cssMap.wrapperClosed);
+            this.domElement.classList.remove(cssMap.wrapperOpen);
+            this.domElement.classList.add(cssMap.wrapperClosed);
         }
     }
 
     public destroy() {
-        this._domElement.parentNode.removeChild(this._domElement);
+        this.domElement.parentNode.removeChild(this.domElement);
     }
 
     public minimize() {
         if (this.isOpen) {
-            let de = this._domElement;
-            let rect = de.getBoundingClientRect();
+            const de = this.domElement;
+            const rect = de.getBoundingClientRect();
             this.lastStyle = {
-                top: rect.top + "px",
-                left: rect.left + "px",
                 height: rect.height + "px",
-                width: rect.width + "px"
+                left: rect.left + "px",
+                top: rect.top + "px",
+                width: rect.width + "px",
             };
             de.classList.remove(cssMap.wrapperOpen);
             de.classList.add(cssMap.wrapperMinimized);
-            de.style.top = '';
-            de.style.left = '';
-            de.style.height = '';
-            de.style.width = '';
+            de.style.top = "";
+            de.style.left = "";
+            de.style.height = "";
+            de.style.width = "";
         } else {
             this.open();
         }
     }
 
     public reappend() {
-        document.body.appendChild(this._domElement);
+        document.body.appendChild(this.domElement);
     }
 
     private _buildWindow() {
-        const wrapper = create("div"),
-            header = this.headerElement = this._buildHeader(),
-            content = this.contentElement = this._buildContent();
+        const wrapper = create("div");
+        const header = this.headerElement = this._buildHeader();
+        const content = this.contentElement = this._buildContent();
 
         wrapper.className = cssMap.wrapper + " " + cssMap.wrapperClosed;
         wrapper.appendChild(header);
         wrapper.appendChild(content);
         wrapper.style.top = "10px";
         wrapper.style.left = "10px";
-        let styles = Object.keys(this.options.style);
-        for (let key in styles) {
+        const styles = Object.keys(this.options.style);
+        for (const key in styles) {
             wrapper.style[key] = this.options.style[key];
         }
 
@@ -154,15 +151,15 @@ export default class TmWindow {
     }
 
     private _buildHeader() {
-        //_headerElement element
+        // _headerElement element
         const header = create("div");
         header.className = cssMap.header;
-        //title element
+        // title element
         const title = this.titleElement = create("div");
         title.className = cssMap.title;
         title.innerHTML = this.getOption("title");
         this._addRepositionEvent(title);
-        //buttons
+        // buttons
         const btns = this._buildHeaderButtons();
 
         header.appendChild(title);
@@ -175,11 +172,11 @@ export default class TmWindow {
         const wrap = create("div");
         wrap.className = cssMap.headerButtons;
 
-        //close button
+        // close button
         const btnClose = this._buildButton(cssMap.btnClose, this.close.bind(this));
         wrap.appendChild(btnClose);
 
-        //minimize button
+        // minimize button
         const btnMin = this._buildButton(cssMap.btnMinimize, this.minimize.bind(this));
         wrap.appendChild(btnMin);
         return wrap;
@@ -201,44 +198,43 @@ export default class TmWindow {
     }
 
     private _addRepositionEvent(el) {
-        //const repo = function(e){console.log(e);};
+        // const repo = function(e){console.log(e);};
         const repo = this._repositionEvent.bind(this);
-        let md = this.mouseDownEv = <MouseDownEventPositions>{};
-        let _this = this;
+        const md = this.mouseDownEv = {} as IMouseDownEventPositions;
 
-        el.addEventListener("mousedown", function (event) {
-            if (_this.isMinimized) {
+        el.addEventListener("mousedown", (event) => {
+            if (this.isMinimized) {
                 return;
             }
             event.preventDefault();
             clearSelection();
             md.x = event.pageX;
             md.y = event.pageY;
-            const rect = _this._domElement.getBoundingClientRect();
+            const rect = this.domElement.getBoundingClientRect();
             md.top = rect.top;
             md.left = rect.left;
-            _this._domElement.classList.add(cssMap.grabbed);
+            this.domElement.classList.add(cssMap.grabbed);
             window.addEventListener("mousemove", repo);
         });
 
-        window.addEventListener("mouseup", function () {
-            _this._domElement.classList.remove(cssMap.grabbed);
+        window.addEventListener("mouseup", () => {
+            this.domElement.classList.remove(cssMap.grabbed);
             window.removeEventListener("mousemove", repo);
         });
-        document.addEventListener("mouseleave", function () {
-            _this._domElement.classList.remove(cssMap.grabbed);
+        document.addEventListener("mouseleave", () => {
+            this.domElement.classList.remove(cssMap.grabbed);
             window.removeEventListener("mousemove", repo);
         });
     }
 
     private _repositionEvent(ev) {
-        const md = this.mouseDownEv,
-            dx = ev.pageX - md.x,
-            dy = ev.pageY - md.y,
-            newX = md.left + dx,
-            newY = md.top + dy,
-            de = this._domElement,
-            rect = de.getBoundingClientRect();
+        const md = this.mouseDownEv;
+        const dx = ev.pageX - md.x;
+        const dy = ev.pageY - md.y;
+        const newX = md.left + dx;
+        const newY = md.top + dy;
+        const de = this.domElement;
+        const rect = de.getBoundingClientRect();
 
         if (newX > 0 && (newX + rect.width) < window.innerWidth) {
             de.style.left = newX + "px";
