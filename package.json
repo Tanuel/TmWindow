@@ -26,6 +26,8 @@
     "watchify": "^3.11.1"
   },
   "scripts": {
-    "lint": "tslint --project ./"
+    "lint": "tslint --project ./",
+    "build-docs": "grunt build:docs",
+    "serve": "grunt serve"
   }
 }
