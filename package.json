@@ -1,7 +1,8 @@
 {
-  "name": "TmWindow",
+  "name": "tmwindow",
   "version": "0.0.0-beta",
   "description": "Library for in-site JavaScript windows",
+  "keywords": ["typescript", "frontend", "commonjs", "window", "draggable"],
   "main": "src/module.ts",
   "author": "Tanuel <tanuel.mategi@gmail.com> (https://tanuel.gitlab.io)",
   "license": "MIT",
@@ -27,6 +28,7 @@
   },
   "scripts": {
     "lint": "tslint --project ./",
+    "build": "grunt build:dev",
     "build-docs": "grunt build:docs",
     "serve": "grunt serve"
   }
