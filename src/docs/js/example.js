@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){
-    let tmw = new TmWindow();
+    let tmw = new TmWindow("My Window Title");
+
+    tmw.setPosition(window.innerWidth - 800,200);
     tmw.open();
     let openBtn = document.getElementById('open-window');
     openBtn.addEventListener('click', tmw.open.bind(tmw));

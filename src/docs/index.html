@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>TmWindow - Tanuel</title>
+    <link rel="stylesheet" href="https://tanuel.gitlab.io/assets/css/tmstyle.css">
     <link rel="stylesheet" href="css/TmWindow.css">
     <link rel="stylesheet" href="css/docs.css">
     <script src="js/TmWindow.js"></script>
@@ -10,18 +11,41 @@
 </head>
 <body>
 <h1>TmWindow</h1>
+<p>
+    <a href="https://gitlab.com/Tanuel/tmwindow" target="_blank">View source on GitLab</a>
+    <a href="/">Visit Homepage</a>
+</p>
 <hr>
-<button id="open-window">Open Window</button>
+<p>This library allows to create a simple window</p>
+<p>Init with <code class="inline">let tmw = new TmWindow("My Window Title")</code></p>
+<p>
+    Open with <code class="inline">tmw.open()</code>
+    <button id="open-window">Click me to open :)</button>
+</p>
 <hr>
-<fieldset>
-    <label>Set Title:</label>
-    <input type="text" id="set-window-title">
-    <button id="apply-window-title">Apply</button>
-</fieldset>
-<fieldset>
-    <label>Set Content</label>
-    <textarea id="set-window-content"></textarea>
-    <button id="apply-window-content">Apply</button>
-</fieldset>
+<table>
+    <tr>
+        <td><label>Set Title:</label></td>
+        <td><input type="text" id="set-window-title"></td>
+        <td>
+            <button id="apply-window-title">Apply</button>
+        </td>
+        <td>
+            Code:
+            <code>tmw.title = "my title"</code>
+        </td>
+    </tr>
+    <tr>
+        <td><label>Set Content</label></td>
+        <td><textarea id="set-window-content"></textarea></td>
+        <td>
+            <button id="apply-window-content">Apply</button>
+        </td>
+        <td>
+            Code:
+            <code>tmw.title = "my title"</code>
+        </td>
+    </tr>
+</table>
 </body>
 </html>
