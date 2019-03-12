@@ -19,8 +19,12 @@ export default class TmWindow {
     private lastStyle: any;
     private mouseDownEv: IMouseDownEventPositions;
 
-    constructor(options: ITmWindowOptions = {}) {
-        this.options = {...defaultOptions, ...options};
+    constructor(options: ITmWindowOptions | string = {}) {
+        if (typeof options === "object") {
+            this.options = {...defaultOptions, ...options};
+        } else {
+            this.options = {...defaultOptions, title: options};
+        }
         this.domElement = this._buildWindow();
         document.body.appendChild(this.domElement);
     }
