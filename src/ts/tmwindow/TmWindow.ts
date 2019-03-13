@@ -1,8 +1,12 @@
 import clearSelection from "../var/clearSelection";
 import create from "../var/create";
-import {cssMap} from "./css-class-map";
-import {defaultOptions, ITmWindowOptions} from "./options";
+import {cssMap} from "./ITmWindowCssMap";
+import {defaultOptions, ITmWindowOptions} from "./ITmWindowOptions";
 
+/**
+ * Helper to identify mouse and window position
+ * Used for repositioning the window with drag and drop
+ */
 interface IMouseDownEventPositions {
     x?: number;
     y?: number;

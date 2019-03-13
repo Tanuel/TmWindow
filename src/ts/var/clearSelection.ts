@@ -1,3 +1,6 @@
+/**
+ * Clears the current selection (user highlighted text)
+ */
 export default function clearSelection() {
     if (window.getSelection) {
         if (window.getSelection().empty) {  // Chrome

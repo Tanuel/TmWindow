@@ -1,4 +1,7 @@
-export interface ICssMap {
+/**
+ * Type declaration for the css map
+ */
+export interface ITmWindowCssMap {
     btn: string;
     btnClose: string;
     btnMinimize: string;
@@ -28,7 +31,10 @@ const btn = wrapper + "-btn";
 const btnClose = btn + " " + wrapper + "-btn-close";
 const btnMinimize = btn + " " + wrapper + "-btn-minimize";
 
-const cssMap: ICssMap = {
+/**
+ * Object with css class names to be used to identify the window
+ */
+const cssMap: ITmWindowCssMap = {
     btn,
     btnClose,
     btnMinimize,

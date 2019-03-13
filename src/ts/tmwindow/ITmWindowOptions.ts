@@ -1,3 +1,6 @@
+/**
+ * Options available to be set with TmWindow.setOption()
+ */
 export interface ITmWindowOptions {
     /**
      * Contain the wrapper element in the window
@@ -21,6 +24,9 @@ export interface ITmWindowOptions {
     title?: string;
 }
 
+/**
+ * Default options used by TmWindow
+ */
 const defaultOptions: ITmWindowOptions = {
     contain: true,
     destroyOnClose: false,
