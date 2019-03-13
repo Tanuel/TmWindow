@@ -25,6 +25,9 @@ module.exports = function (grunt) {
                 configure: function (bundler) {
                     bundler.plugin(require('tsify'));
                 },
+                browserifyOptions: {
+                    standalone: 'TmWindow',
+                },
             },
             dev: {
                 options: {
@@ -33,24 +36,17 @@ module.exports = function (grunt) {
                     },
                 },
                 files: {
-                    '<%=dev%>/js/<%=projectName%>.js': '<%=src%>/ts/global.ts',
-                    '<%=dev%>/js/example.js': '<%=src%>/docs/js/example.js'
+                    '<%=dev%>/js/<%=projectName%>.js': '<%=src%>/ts/module.ts',
                 },
             },
             docs: {
                 files: {
-                    '<%=docs%>/js/<%=projectName%>.js': '<%=src%>/ts/global.ts',
-                    '<%=docs%>/js/example.js': '<%=src%>/docs/js/example.js'
+                    '<%=docs%>/js/<%=projectName%>.js': '<%=src%>/ts/module.ts',
                 },
             },
             dist: {
                 files: {
-                    '<%=dst%>/js/<%=projectName%>.js': '<%=src%>/ts/module.ts'
-                },
-                options: {
-                    browserifyOptions: {
-                        standalone: 'TmWindowStandalone',
-                    },
+                    '<%=dst%>/js/<%=projectName%>.js': '<%=src%>/ts/module.ts',
                 },
             },
         },
@@ -87,12 +83,14 @@ module.exports = function (grunt) {
         copy: {
             docs: {
                 files: {
-                    '<%=docs%>/index.html': '<%=src%>/docs/index.html'
+                    '<%=docs%>/index.html': '<%=src%>/docs/index.html',
+                    '<%=dev%>/js/example.js': '<%=src%>/docs/js/example.js',
                 }
             },
             dev: {
                 files: {
-                    '<%=dev%>/index.html': '<%=src%>/docs/index.html'
+                    '<%=dev%>/index.html': '<%=src%>/docs/index.html',
+                    '<%=dev%>/js/example.js': '<%=src%>/docs/js/example.js',
                 }
             }
         },
