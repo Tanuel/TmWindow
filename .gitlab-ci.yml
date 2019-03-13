@@ -1,17 +1,19 @@
 image: node:latest
 
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
 pages:
   stage: deploy
 
-  cache:
-    paths:
-      - node_modules/
 
   script:
     - npm prune
     - npm install -g yarn
     - yarn install
-    - yarn build-docs
+    - yarn docs
 
   artifacts:
     paths:
