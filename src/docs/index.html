@@ -11,10 +11,10 @@
 </head>
 <body>
 <h1>TmWindow</h1>
-<p>
-    <a href="https://gitlab.com/Tanuel/tmwindow" target="_blank">View source on GitLab</a>
-    <a href="/">Visit Homepage</a>
-</p>
+<ul>
+    <li><a href="https://gitlab.com/Tanuel/tmwindow" target="_blank">View source on GitLab</a></li>
+    <li><a href="/">Visit Homepage</a></li>
+</ul>
 <hr>
 <p>This library allows to create a simple window</p>
 <p>Init with <code class="inline">let tmw = new TmWindow("My Window Title")</code></p>
@@ -25,7 +25,7 @@
 <hr>
 <table>
     <tr>
-        <td><label>Set Title:</label></td>
+        <td><label for="set-window-title">Set Title</label></td>
         <td><input type="text" id="set-window-title"></td>
         <td>
             <button id="apply-window-title">Apply</button>
@@ -36,7 +36,7 @@
         </td>
     </tr>
     <tr>
-        <td><label>Set Content</label></td>
+        <td><label for="set-window-content">Set Content</label></td>
         <td><textarea id="set-window-content"></textarea></td>
         <td>
             <button id="apply-window-content">Apply</button>
