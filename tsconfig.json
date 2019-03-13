@@ -4,9 +4,7 @@
     "noImplicitAny": false,
     "preserveConstEnums": true,
     "target": "ES5",
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "outFile": "dist/js/TmWindow.js"
+    "declaration": true
   },
   "files": [
     "src/ts/index.ts"

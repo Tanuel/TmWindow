@@ -84,7 +84,7 @@ module.exports = function (grunt) {
             docs: {
                 files: {
                     '<%=docs%>/index.html': '<%=src%>/docs/index.html',
-                    '<%=dev%>/js/example.js': '<%=src%>/docs/js/example.js',
+                    '<%=docs%>/js/example.js': '<%=src%>/docs/js/example.js',
                 }
             },
             dev: {
