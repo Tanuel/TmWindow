@@ -34,6 +34,7 @@
     "dev": "grunt build:dev",
     "dist": "grunt build:dist",
     "docs": "grunt build:docs",
+    "tsc-types": "tsc --outFile dist/js/TmWindow.js --emitDeclarationOnly true",
     "serve": "grunt serve"
   }
 }
