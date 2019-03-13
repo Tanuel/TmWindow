@@ -36,17 +36,17 @@ module.exports = function (grunt) {
                     },
                 },
                 files: {
-                    '<%=dev%>/js/<%=projectName%>.js': '<%=src%>/ts/module.ts',
+                    '<%=dev%>/js/<%=projectName%>.js': '<%=src%>/ts/index.ts',
                 },
             },
             docs: {
                 files: {
-                    '<%=docs%>/js/<%=projectName%>.js': '<%=src%>/ts/module.ts',
+                    '<%=docs%>/js/<%=projectName%>.js': '<%=src%>/ts/index.ts',
                 },
             },
             dist: {
                 files: {
-                    '<%=dst%>/js/<%=projectName%>.js': '<%=src%>/ts/module.ts',
+                    '<%=dst%>/js/<%=projectName%>.js': '<%=src%>/ts/index.ts',
                 },
             },
         },

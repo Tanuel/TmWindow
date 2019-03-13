@@ -7,7 +7,6 @@
     "target": "ES6"
   },
   "files": [
-    "src/ts/global.ts",
-    "src/ts/module.ts"
+    "src/ts/index.ts"
   ]
 }
