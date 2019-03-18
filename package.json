@@ -27,7 +27,8 @@
     "tsify": "^4.0.1",
     "tslint": "^5.13.1",
     "typescript": "^3.3.3333",
-    "watchify": "^3.11.1"
+    "watchify": "^3.11.1",
+    "tmutil": "*"
   },
   "scripts": {
     "lint": "tslint --project ./",

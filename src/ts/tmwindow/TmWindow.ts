@@ -1,5 +1,4 @@
-import clearSelection from "../var/clearSelection";
-import create from "../var/create";
+import {create, clearSelection} from "tmutil";
 import {cssMap} from "./ITmWindowCssMap";
 import {defaultOptions, ITmWindowOptions} from "./ITmWindowOptions";
 
@@ -83,6 +82,7 @@ export default class TmWindow {
             default:
                 break;
         }
+        return this;
     }
 
     public getOption(name: string) {

@@ -4,7 +4,11 @@
     "noImplicitAny": false,
     "preserveConstEnums": true,
     "target": "ES5",
-    "declaration": true
+    "declaration": true,
+    "lib": [
+      "dom",
+      "es2017"
+    ]
   },
   "files": [
     "src/ts/index.ts"

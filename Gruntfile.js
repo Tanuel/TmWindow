@@ -27,6 +27,7 @@ module.exports = function (grunt) {
                 },
                 browserifyOptions: {
                     standalone: 'TmWindow',
+                    extensions: ['.js', '.ts'],
                 },
             },
             dev: {
@@ -34,6 +35,7 @@ module.exports = function (grunt) {
                     browserifyOptions: {
                         debug: true,
                         standalone: 'TmWindow',
+                        extensions: ['.js', '.ts'],
                     },
                 },
                 files: {
