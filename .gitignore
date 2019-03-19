@@ -5,3 +5,5 @@
 /.idea
 /.tscache
 /yarn-error.log
+/src/ts/**/*.js
+/src/ts/**/*.d.ts
