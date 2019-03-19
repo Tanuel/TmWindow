@@ -1,4 +1,4 @@
-import {create, clearSelection} from "tmutil";
+import {clearSelection, create} from "tmutil";
 import {cssMap} from "./ITmWindowCssMap";
 import {defaultOptions, ITmWindowOptions} from "./ITmWindowOptions";
 
@@ -101,9 +101,9 @@ export default class TmWindow {
     public open() {
         const de = this.domElement;
         if (this.isMinimized && typeof this.lastStyle === "object") {
-            for (const k in this.lastStyle) {
-                de.style[k] = this.lastStyle[k];
-            }
+            Object.entries(this.lastStyle).forEach(([key, value]) => {
+                de.style[key] = value;
+            });
         }
         de.classList.remove(cssMap.wrapperClosed, cssMap.wrapperMinimized);
         de.classList.add(cssMap.wrapperOpen);
@@ -161,10 +161,10 @@ export default class TmWindow {
         wrapper.appendChild(content);
         wrapper.style.top = "10px";
         wrapper.style.left = "10px";
-        const styles = Object.keys(this.options.style);
-        for (const key in styles) {
-            wrapper.style[key] = this.options.style[key];
-        }
+
+        Object.entries(this.options.style).forEach(([key, value]) => {
+            wrapper.style[key] = value;
+        });
 
         wrapper.addEventListener("click", this.reappend.bind(this));
         return wrapper;
