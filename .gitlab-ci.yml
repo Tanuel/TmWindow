@@ -1,17 +1,47 @@
 image: node:latest
 
+stages:
+  - test
+  - release
+  - deploy
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
     - node_modules/
 
-pages:
-  stage: deploy
+test:lint:
+  stage: test
   script:
     - npm prune
     - npm install -g yarn
     - yarn install
-    - yarn docs
+    - yarn lint
+
+publish:
+  stage: release
+  cache:
+    policy: pull
+  script:
+    - npm prune
+    - npm install -g yarn
+    - yarn install
+    - yarn build
+    - yarn build:dist
+    - yarn release
+  only:
+    - master
+
+pages:
+  stage: deploy
+  cache:
+    policy: pull
+  script:
+    - npm prune
+    - npm install -g yarn
+    - yarn install
+    - yarn build:docs
+    - yarn build:typedoc
   artifacts:
     paths:
       - public

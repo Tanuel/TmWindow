@@ -2,9 +2,15 @@
   "name": "tmwindow",
   "version": "0.0.0-beta",
   "description": "Library for in-site JavaScript windows",
-  "keywords": ["typescript", "frontend", "commonjs", "window", "draggable"],
-  "main": "dist/js/TmWindow.js",
-  "types": "dist/js/TmWindow.d.ts",
+  "keywords": [
+    "typescript",
+    "frontend",
+    "commonjs",
+    "window",
+    "draggable"
+  ],
+  "main": "src/ts/index.js",
+  "types": "src/ts/index.d.ts",
   "style": "dist/css/TmWindow.css",
   "sass": "src/scss/main.scss",
   "author": "Tanuel <tanuel.mategi@gmail.com> (https://tanuel.gitlab.io)",
@@ -14,7 +20,14 @@
   "bugs": {
     "url": "https://gitlab.com/Tanuel/tmwindow/issues"
   },
+  "dependencies": {
+    "tmutil": "^1.0.0"
+  },
   "devDependencies": {
+    "@semantic-release/commit-analyzer": "^6.1.0",
+    "@semantic-release/gitlab": "^3.1.2",
+    "@semantic-release/npm": "^5.1.4",
+    "@semantic-release/release-notes-generator": "^7.1.4",
     "browserify": "^16.2.3",
     "grunt": "^1.0.3",
     "grunt-browserify": "^5.3.0",
@@ -24,18 +37,55 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-sass": "^3.0.2",
     "node-sass": "^4.11.0",
+    "semantic-release": "^15.13.3",
     "tsify": "^4.0.1",
     "tslint": "^5.13.1",
+    "typedoc": "^0.14.2",
     "typescript": "^3.3.3333",
-    "watchify": "^3.11.1",
-    "tmutil": "*"
+    "watchify": "^3.11.1"
   },
   "scripts": {
     "lint": "tslint --project ./",
     "dev": "grunt build:dev",
-    "dist": "grunt build:dist",
-    "docs": "grunt build:docs",
+    "build": "tsc",
+    "build:dist": "grunt build:dist",
+    "build:docs": "grunt build:docs",
+    "build:typedoc": "typedoc ./src/ts",
     "tsc-types": "tsc --outFile dist/js/TmWindow.js --emitDeclarationOnly true",
-    "serve": "grunt serve"
+    "serve": "grunt serve",
+    "release": "semantic-release"
+  },
+  "release": {
+    "branch": "master",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/gitlab",
+      "@semantic-release/npm"
+    ],
+    "analyzeCommits": {
+      "releaseRules": [
+        {
+          "type": "MAJOR",
+          "release": "major"
+        },
+        {
+          "type": "FEATURE",
+          "release": "minor"
+        },
+        {
+          "type": "BUGFIX",
+          "release": "patch"
+        },
+        {
+          "type": "SECURITY",
+          "release": "patch"
+        },
+        {
+          "type": "PATCH",
+          "release": "patch"
+        }
+      ]
+    }
   }
 }

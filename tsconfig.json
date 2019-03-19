@@ -11,6 +11,13 @@
     ]
   },
   "files": [
-    "src/ts/index.ts"
-  ]
+    "./src/ts/index.ts"
+  ],
+  "typedocOptions": {
+    "mode": "file",
+    "out": "public/typedoc",
+    "readme": "Readme.md",
+    "excludeNotExported": true,
+    "excludePrivate": true
+  }
 }

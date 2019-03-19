@@ -10,7 +10,11 @@ install dependencies
 
     yarn install
 
-run test environment under *localhost:9001* (opens automatically)
+build for dev
+
+    yarn dev
+
+run test environment under *localhost:9001* (opens automatically with livereload)
 
     yarn serve
     

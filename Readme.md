@@ -2,23 +2,23 @@
 
 ## Install
 
-```
-# install dependencies
-yarn install
+Using yarn
 
-# build dev
-yarn dev
+    yarn add tmwindow
 
-# watch for changes
-yarn watch
-
-```
+using npm
+    
+    npm install tmwindow
 
 ## Usage
 
+TODO: Add more code examples
+
 ```JavaScript
+const TmWindow = require('tmwindow');
+
 //create window
-let tmw = new TmWindow('My Window');
+const tmw = new TmWindow('My Window');
 
 //show window
 tmw.open();

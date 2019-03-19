@@ -144,6 +144,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build:dist', [
+        'clean:dist',
         'browserify:dist',
         'sass:dist',
     ]);
