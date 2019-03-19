@@ -18,6 +18,7 @@
     "out": "public/typedoc",
     "readme": "Readme.md",
     "excludeNotExported": true,
-    "excludePrivate": true
+    "excludePrivate": true,
+    "excludeExternals": true
   }
 }
