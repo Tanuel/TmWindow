@@ -17,6 +17,8 @@ test:lint:
     - npm install -g yarn
     - yarn install
     - yarn lint
+  except:
+    - tags
 
 publish:
   stage: release

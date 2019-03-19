@@ -1,6 +1,6 @@
 {
   "name": "tmwindow",
-  "version": "0.0.0-beta",
+  "version": "0.0.0-dev",
   "description": "Library for in-site JavaScript windows",
   "keywords": [
     "typescript",
