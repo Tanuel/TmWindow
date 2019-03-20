@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": "src/ts",
     "module": "commonjs",
     "noImplicitAny": false,
     "preserveConstEnums": true,
@@ -10,8 +11,13 @@
       "es2017"
     ]
   },
-  "files": [
-    "./src/ts/index.ts"
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "./src/**/*.d.ts",
+    "./src/**/*.test.ts",
+    "./src/**/*.spec.ts"
   ],
   "typedocOptions": {
     "mode": "file",
