@@ -124,6 +124,18 @@ module.exports = function (grunt) {
                 },
             },
         },
+        ts: {
+            default: {
+                tsconfig: './tsconfig.json'
+            },
+            dist: {
+                tsconfig: './tsconfig.json',
+                out: 'dist/js/TmWindow.js',
+                options: {
+                    additionalFlags: '--emitDeclarationOnly true'
+                }
+            }
+        }
     });
 
     grunt.loadNpmTasks('grunt-browserify');
@@ -132,6 +144,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-sass');
+    grunt.loadNpmTasks('grunt-ts');
 
     // Default task(s).
     grunt.registerTask('build:dev', [
@@ -154,6 +167,7 @@ module.exports = function (grunt) {
         'clean:dist',
         'browserify:dist',
         'sass:dist',
+        'ts:dist'
     ]);
 
     grunt.registerTask('build:docs', [
@@ -161,9 +175,5 @@ module.exports = function (grunt) {
         'browserify:docs',
         'sass:docs',
         'copy:docs'
-    ]);
-
-    grunt.registerTask('build', [
-        'build:docs',
     ]);
 };
