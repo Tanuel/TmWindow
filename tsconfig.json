@@ -5,11 +5,7 @@
     "noImplicitAny": false,
     "preserveConstEnums": true,
     "target": "ES5",
-    "declaration": true,
-    "lib": [
-      "dom",
-      "es2017"
-    ]
+    "declaration": true
   },
   "include": [
     "./src/**/*.ts"
