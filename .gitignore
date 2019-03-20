@@ -6,4 +6,5 @@
 /.tscache
 /yarn-error.log
 /src/ts/**/*.js
+/src/ts/**/*.js.map
 /src/ts/**/*.d.ts
