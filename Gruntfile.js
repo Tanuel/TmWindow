@@ -10,6 +10,13 @@ module.exports = function (grunt) {
         docs: 'public',
         projectName: 'TmWindow',
         clean: {
+            code: {
+                src: [
+                    '<%=src%>/ts/**/*.js',
+                    '<%=src%>/ts/**/*.js.map',
+                    '<%=src%>/ts/**/*.d.ts'
+                ]
+            },
             dist: {
                 src: ['<%=dst%>/*']
             },
