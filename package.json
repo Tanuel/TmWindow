@@ -37,6 +37,7 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-sass": "^3.0.2",
     "grunt-ts": "^6.0.0-beta.22",
+    "grunt-typedoc": "^0.2.4",
     "node-sass": "^4.11.0",
     "semantic-release": "^15.13.3",
     "tsify": "^4.0.1",
@@ -49,11 +50,9 @@
     "lint": "tslint --project ./",
     "clean": "grunt clean",
     "dev": "grunt build:dev",
-    "build": "tsc",
+    "build": "grunt build",
     "build:dist": "grunt build:dist",
     "build:docs": "grunt build:docs",
-    "build:typedoc": "typedoc ./src/ts",
-    "tsc-types": "tsc --outFile dist/js/TmWindow.js --emitDeclarationOnly true",
     "serve": "grunt serve",
     "release": "semantic-release"
   },
@@ -62,7 +61,11 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      "@semantic-release/gitlab",
+      ["@semantic-release/gitlab", {
+        "assets": [
+          {"path": "dist/**/*", "label": "Distribution"}
+        ]
+      }],
       "@semantic-release/npm"
     ],
     "analyzeCommits": {

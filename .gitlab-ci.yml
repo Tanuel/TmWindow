@@ -2,7 +2,6 @@ image: node:latest
 
 stages:
   - test
-  - release
   - deploy
 
 cache:
@@ -21,20 +20,6 @@ test:lint:
     - tags
 
 publish:
-  stage: release
-  cache:
-    policy: pull
-  script:
-    - npm prune
-    - npm install -g yarn
-    - yarn install
-    - yarn build
-    - yarn build:dist
-    - yarn release
-  only:
-    - master
-
-pages:
   stage: deploy
   cache:
     policy: pull
@@ -42,8 +27,8 @@ pages:
     - npm prune
     - npm install -g yarn
     - yarn install
-    - yarn build:docs
-    - yarn build:typedoc
+    - yarn build
+    - yarn release
   artifacts:
     paths:
       - public

@@ -135,6 +135,11 @@ module.exports = function (grunt) {
                     additionalFlags: '--emitDeclarationOnly true'
                 }
             }
+        },
+        typedoc: {
+            docs:{
+                src: ['./src/ts/**/*.ts']
+            }
         }
     });
 
@@ -145,6 +150,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-ts');
+    grunt.loadNpmTasks('grunt-typedoc');
 
     // Default task(s).
     grunt.registerTask('build:dev', [
@@ -163,6 +169,12 @@ module.exports = function (grunt) {
         'serve:dev',
     ]);
 
+    grunt.registerTask('build', [
+        'build:dist',
+        'build:docs',
+        'ts:default'
+    ]);
+
     grunt.registerTask('build:dist', [
         'clean:dist',
         'browserify:dist',
@@ -174,6 +186,7 @@ module.exports = function (grunt) {
         'clean:docs',
         'browserify:docs',
         'sass:docs',
-        'copy:docs'
+        'copy:docs',
+        'typedoc:docs'
     ]);
 };
