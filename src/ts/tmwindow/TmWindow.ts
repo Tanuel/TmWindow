@@ -1,4 +1,4 @@
-import {clearSelection, create} from "tmutil";
+import {clearSelection, create, each} from "tmutil";
 import {cssMap} from "./ITmWindowCssMap";
 import {defaultOptions, ITmWindowOptions} from "./ITmWindowOptions";
 
@@ -101,7 +101,7 @@ export default class TmWindow {
     public open() {
         const de = this.domElement;
         if (this.isMinimized && typeof this.lastStyle === "object") {
-            Object.entries(this.lastStyle).forEach(([key, value]) => {
+            each(this.lastStyle, (key, value) => {
                 de.style[key] = value;
             });
         }
@@ -161,8 +161,7 @@ export default class TmWindow {
         wrapper.appendChild(content);
         wrapper.style.top = "10px";
         wrapper.style.left = "10px";
-
-        Object.entries(this.options.style).forEach(([key, value]) => {
+        each(this.options.style, (key, value) => {
             wrapper.style[key] = value;
         });
 
