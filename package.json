@@ -63,7 +63,7 @@
       "@semantic-release/release-notes-generator",
       ["@semantic-release/gitlab", {
         "assets": [
-          {"path": "dist/**/*", "label": "Distribution"}
+          {"path": "dist/**/*"}
         ]
       }],
       "@semantic-release/npm"
