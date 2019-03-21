@@ -61,11 +61,16 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      ["@semantic-release/gitlab", {
-        "assets": [
-          {"path": "dist/**/*"}
-        ]
-      }],
+      [
+        "@semantic-release/gitlab",
+        {
+          "assets": [
+            {
+              "path": "dist/**/*"
+            }
+          ]
+        }
+      ],
       "@semantic-release/npm"
     ],
     "analyzeCommits": {
