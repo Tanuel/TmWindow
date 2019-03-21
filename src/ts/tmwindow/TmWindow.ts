@@ -26,6 +26,7 @@ const defaultOptions: ITmWindowOptions = {
 };
 
 export default class TmWindow {
+    public static readonly defaultOptions: ITmWindowOptions = defaultOptions;
     public readonly domElement: HTMLElement;
     private readonly options: ITmWindowOptions;
     private headerElement: HTMLElement;
@@ -80,10 +81,17 @@ export default class TmWindow {
         this.contentElement.innerHTML = content;
     }
 
-    public setOption(name: string, value: any) {
-        if (name in this.options) {
-            (this.options as any)[name] = value;
-        }
+    public static getDefaultOption(name: keyof ITmWindowOptions) {
+        return TmWindow.defaultOptions[name];
+    }
+
+    public static setDefaultOption(name: keyof ITmWindowOptions, value: any): typeof TmWindow {
+        TmWindow.defaultOptions[name] = value;
+        return TmWindow;
+    }
+
+    public setOption(name: keyof ITmWindowOptions, value: any) {
+        this.options[name] = value;
         switch (name) {
             case "title":
                 this.titleElement.innerHTML = value;
@@ -97,8 +105,10 @@ export default class TmWindow {
         return this;
     }
 
-    public getOption(name: string) {
-        return name in this.options ? (this.options as any)[name] : "";
+    public getOption<T extends keyof ITmWindowOptions>(name: T): ITmWindowOptions[T];
+
+    public getOption(name: keyof ITmWindowOptions) {
+        return this.options[name];
     }
 
     public appendElement(element: HTMLElement) {
