@@ -7,6 +7,10 @@ export interface ITmWindowOptions {
      */
     contain?: boolean;
     /**
+     * Window content. Can be a string (added as innerHTML) or HTMLElement (appended to body)
+     */
+    content?: string | HTMLElement;
+    /**
      *  remove element from dom when close method gets called
      */
     destroyOnClose?: boolean;

@@ -17,6 +17,7 @@ interface IMouseDownEventPositions {
  * Default options used by TmWindow
  */
 const defaultOptions: ITmWindowOptions = {
+    content: "",
     contain: true,
     destroyOnClose: false,
     resizable: true,
@@ -221,10 +222,15 @@ export default class TmWindow {
     }
 
     private _buildContent() {
-        const content = create("div");
-        content.className = cssMap.content;
-        content.innerHTML = this.getOption("content");
-        return content;
+        const contentElement = create("div", {className: cssMap.content});
+
+        const content = this.getOption("content");
+        if (content instanceof HTMLElement) {
+            contentElement.appendChild(content);
+        } else {
+            contentElement.innerHTML = content;
+        }
+        return contentElement;
     }
 
     private _addRepositionEvent(el) {
