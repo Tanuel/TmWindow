@@ -7,7 +7,7 @@ export interface ITmWindowOptions {
      */
     contain?: boolean;
     /**
-     * Window content. Can be a string (added as innerHTML) or HTMLElement (appended to body)
+     * Window content. Can be a string (added as innerHTML) or HTMLElement (appended to content element)
      */
     content?: string | HTMLElement;
     /**
@@ -23,7 +23,7 @@ export interface ITmWindowOptions {
      */
     style?: object;
     /**
-     *  Window title
+     *  Window title. Can be a string (added as innerHTML) or HTMLElement (appended to title element)
      */
-    title?: string;
+    title?: string | HTMLElement;
 }
