@@ -23,16 +23,3 @@ export interface ITmWindowOptions {
      */
     title?: string;
 }
-
-/**
- * Default options used by TmWindow
- */
-const defaultOptions: ITmWindowOptions = {
-    contain: true,
-    destroyOnClose: false,
-    resizable: true,
-    style : {},
-    title: "",
-};
-
-export {defaultOptions};

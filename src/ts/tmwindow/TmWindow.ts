@@ -1,6 +1,6 @@
 import {clearSelection, create, each} from "tmutil";
 import {cssMap} from "./ITmWindowCssMap";
-import {defaultOptions, ITmWindowOptions} from "./ITmWindowOptions";
+import {ITmWindowOptions} from "./ITmWindowOptions";
 
 /**
  * Helper to identify mouse and window position
@@ -12,6 +12,17 @@ interface IMouseDownEventPositions {
     left?: number;
     top?: number;
 }
+
+/**
+ * Default options used by TmWindow
+ */
+const defaultOptions: ITmWindowOptions = {
+    contain: true,
+    destroyOnClose: false,
+    resizable: true,
+    style: {},
+    title: "",
+};
 
 export default class TmWindow {
     public readonly domElement: HTMLElement;
