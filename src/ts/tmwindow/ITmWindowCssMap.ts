@@ -34,7 +34,7 @@ const btnMinimize = btn + " " + wrapper + "-btn-minimize";
 /**
  * Object with css class names to be used to identify the window
  */
-const cssMap: ITmWindowCssMap = {
+export const cssMap: ITmWindowCssMap = {
     btn,
     btnClose,
     btnMinimize,
@@ -49,5 +49,3 @@ const cssMap: ITmWindowCssMap = {
     wrapperMinimized,
     wrapperOpen,
 };
-
-export {cssMap};

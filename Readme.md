@@ -1,5 +1,7 @@
 # TmWindow
 
+[➡ Full API Reference (TypeDoc) ⬅](https://tanuel.gitlab.io/tmwindow/typedoc/)
+
 ## Install
 
 Using yarn

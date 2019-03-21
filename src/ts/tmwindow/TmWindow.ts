@@ -1,6 +1,6 @@
-import {clearSelection, create, each} from "tmutil";
+import {clearSelection, create, each, empty} from "tmutil";
 import {cssMap} from "./ITmWindowCssMap";
-import {defaultOptions, ITmWindowOptions} from "./ITmWindowOptions";
+import {ITmWindowOptions} from "./ITmWindowOptions";
 
 /**
  * Helper to identify mouse and window position
@@ -13,7 +13,83 @@ interface IMouseDownEventPositions {
     top?: number;
 }
 
+/**
+ * Default options used by TmWindow
+ */
+const defaultOptions: ITmWindowOptions = {
+    contain: true,
+    content: "",
+    destroyOnClose: false,
+    resizable: true,
+    style: {},
+    title: "",
+};
+
 export default class TmWindow {
+
+    get isOpen(): boolean {
+        return this.domElement.classList.contains(cssMap.wrapperOpen);
+    }
+
+    get isClosed(): boolean {
+        return this.domElement.classList.contains(cssMap.wrapperClosed);
+    }
+
+    get isMinimized(): boolean {
+        return this.domElement.classList.contains(cssMap.wrapperMinimized);
+    }
+
+    get title(): ITmWindowOptions["title"] {
+        return this.getOption("title");
+    }
+
+    set title(title: ITmWindowOptions["title"]) {
+        this.setOption("title", title);
+    }
+
+    set width(width: number) {
+        this.domElement.style.width = width + "px";
+    }
+
+    /**
+     * Set the x position (style.left)
+     * If a number is passed, it will be treated as a pixel value
+     * @param x
+     */
+    set x(x: string | number) {
+        this.domElement.style.left = typeof x === "string" ? x : x + "px";
+    }
+
+    /**
+     * Set the y position (style.top)
+     * If a number is passed, it will be treated as a pixel value
+     * @param y
+     */
+    set y(y: string | number) {
+        this.domElement.style.top = typeof y === "string" ? y : y + "px";
+    }
+
+    get content(): ITmWindowOptions["content"] {
+        return this.getOption("content");
+    }
+
+    set content(content: ITmWindowOptions["content"]) {
+        this.setOption("content", content);
+    }
+    public static readonly defaultOptions: ITmWindowOptions = defaultOptions;
+
+    public static getDefaultOption<T extends keyof ITmWindowOptions>(name: T): ITmWindowOptions[T];
+    public static getDefaultOption(name: keyof ITmWindowOptions) {
+        return TmWindow.defaultOptions[name];
+    }
+
+    // tslint:disable-next-line:max-line-length
+    public static setDefaultOption<T extends keyof ITmWindowOptions>(name: T, value: ITmWindowOptions[T]): typeof TmWindow;
+    public static setDefaultOption(name: keyof ITmWindowOptions, value: any): typeof TmWindow {
+        TmWindow.defaultOptions[name] = value;
+        return TmWindow;
+    }
+
     public readonly domElement: HTMLElement;
     private readonly options: ITmWindowOptions;
     private headerElement: HTMLElement;
@@ -32,49 +108,16 @@ export default class TmWindow {
         document.body.appendChild(this.domElement);
     }
 
-    get isOpen() {
-        return this.domElement.classList.contains(cssMap.wrapperOpen);
-    }
-
-    get isClosed() {
-        return this.domElement.classList.contains(cssMap.wrapperClosed);
-    }
-
-    get isMinimized() {
-        return this.domElement.classList.contains(cssMap.wrapperMinimized);
-    }
-
-    get title() {
-        return this.titleElement.innerHTML;
-    }
-
-    set title(title: string) {
-        this.setOption("title", title);
-    }
-
-    set width(width: number) {
-        this.domElement.style.width = width + "px";
-    }
-
-    set x(x: number) {
-        this.domElement.style.left = x + "px";
-    }
-
-    set y(y: number) {
-        this.domElement.style.top = y + "px";
-    }
-
-    set content(content: any) {
-        this.contentElement.innerHTML = content;
-    }
-
-    public setOption(name: string, value: any) {
-        if (name in this.options) {
-            (this.options as any)[name] = value;
-        }
+    public setOption<T extends keyof ITmWindowOptions>(name: T, value: ITmWindowOptions[T]): this;
+    public setOption(name: keyof ITmWindowOptions, value: any): this {
+        this.options[name] = value;
         switch (name) {
             case "title":
-                this.titleElement.innerHTML = value;
+                if (value instanceof HTMLElement) {
+                    empty(this.titleElement).appendChild(value);
+                } else {
+                    this.titleElement.innerHTML = value;
+                }
                 break;
             case "resizable":
                 this.domElement.classList.toggle(cssMap.resizable, !!value);
@@ -85,20 +128,35 @@ export default class TmWindow {
         return this;
     }
 
-    public getOption(name: string) {
-        return name in this.options ? (this.options as any)[name] : "";
+    public getOption<T extends keyof ITmWindowOptions>(name: T): ITmWindowOptions[T];
+    public getOption(name: keyof ITmWindowOptions) {
+        return this.options[name];
     }
 
-    public appendElement(element: HTMLElement) {
+    public appendChild<T extends Node>(element: T): this {
         this.contentElement.appendChild(element);
+        return this;
     }
 
-    public setPosition(x: number, y: number) {
-        this.domElement.style.left = x + "px";
-        this.domElement.style.top = y + "px";
+    /**
+     * Set the position of the window.
+     * If the params are strings, they will be set as direct values,
+     * if the params are numbers, they will be set as pixel values
+     *
+     * @param x
+     * @param y
+     */
+    public setPosition(x: string | number, y: string | number): this {
+        this.domElement.style.left = typeof x === "string" ? x : x + "px";
+        this.domElement.style.top = typeof y === "string" ? y : y + "px";
+        return this;
     }
 
-    public open() {
+    /**
+     * Open/Show the window.
+     * Previous styles and the position will be restored.
+     */
+    public open(): this {
         const de = this.domElement;
         if (this.isMinimized && typeof this.lastStyle === "object") {
             each(this.lastStyle, (key, value) => {
@@ -107,23 +165,39 @@ export default class TmWindow {
         }
         de.classList.remove(cssMap.wrapperClosed, cssMap.wrapperMinimized);
         de.classList.add(cssMap.wrapperOpen);
+        return this;
     }
 
-    public close(event) {
+    /**
+     * Close the window. If the option "destroyOnClose" is set to true,
+     * the window will be removed from the dom.
+     * Current position will be preserved.
+     * @param event
+     */
+    public close(event): this {
         if (this.getOption("destroyOnClose")) {
-            this.destroy();
+            this.remove();
             event.stopImmediatePropagation();
         } else {
             this.domElement.classList.remove(cssMap.wrapperOpen);
             this.domElement.classList.add(cssMap.wrapperClosed);
         }
+        return this;
     }
 
-    public destroy() {
+    /**
+     * Remove the window from the DOM
+     */
+    public remove(): this {
         this.domElement.parentNode.removeChild(this.domElement);
+        return this;
     }
 
-    public minimize() {
+    /**
+     * Minimize the window.
+     * Current position will be preserved.
+     */
+    public minimize(): this {
         if (this.isOpen) {
             const de = this.domElement;
             const rect = de.getBoundingClientRect();
@@ -142,54 +216,77 @@ export default class TmWindow {
         } else {
             this.open();
         }
+        return this;
     }
 
-    public reappend() {
-        document.body.appendChild(this.domElement);
+    /**
+     * Append the window to the parent element again.
+     * This is a trick to show the window above other windows or elements
+     * without messing around with the z-index
+     */
+    public reappend(): this {
+        this.domElement.parentElement.appendChild(this.domElement);
+        return this;
     }
 
-    private _buildWindow() {
-        const wrapper = create("div");
-        const header = this.headerElement = this._buildHeader();
-        const content = this.contentElement = this._buildContent();
+    /**
+     * Build the window wrapper
+     * @private
+     */
+    private _buildWindow(): HTMLDivElement {
+        const wrapper = create("div", {
+            className: cssMap.wrapper + " " + cssMap.wrapperClosed,
+            style: {
+                left: "10px",
+                top: "10px",
+                ...this.options.style,
+            },
+        });
 
-        wrapper.className = cssMap.wrapper + " " + cssMap.wrapperClosed;
         if (this.options.resizable) {
             wrapper.classList.add(cssMap.resizable);
         }
+
+        const header = this.headerElement = this._buildHeader();
+        const content = this.contentElement = this._buildContent();
+
         wrapper.appendChild(header);
         wrapper.appendChild(content);
-        wrapper.style.top = "10px";
-        wrapper.style.left = "10px";
-        each(this.options.style, (key, value) => {
-            wrapper.style[key] = value;
-        });
-
         wrapper.addEventListener("click", this.reappend.bind(this));
         return wrapper;
     }
 
-    private _buildHeader() {
+    /**
+     * Build the window header, containing the title and action buttons
+     * @private
+     */
+    private _buildHeader(): HTMLDivElement {
         // _headerElement element
-        const header = create("div");
-        header.className = cssMap.header;
+        const headerElement = create("div", {className: cssMap.header});
         // title element
-        const title = this.titleElement = create("div");
-        title.className = cssMap.title;
-        title.innerHTML = this.getOption("title");
-        this._addRepositionEvent(title);
+        const title = this.getOption("title");
+        const titleElement = this.titleElement = create("div", {className: cssMap.title});
+        if (title instanceof HTMLElement) {
+            titleElement.appendChild(title);
+        } else {
+            titleElement.innerHTML = title;
+        }
+        this._addRepositionEvent(titleElement);
         // buttons
         const btns = this._buildHeaderButtons();
 
-        header.appendChild(title);
-        header.appendChild(btns);
+        headerElement.appendChild(titleElement);
+        headerElement.appendChild(btns);
 
-        return header;
+        return headerElement;
     }
 
-    private _buildHeaderButtons() {
-        const wrap = create("div");
-        wrap.className = cssMap.headerButtons;
+    /**
+     * Creates the action buttons for the header element
+     * @private
+     */
+    private _buildHeaderButtons(): HTMLDivElement {
+        const wrap = create("div", {className: cssMap.headerButtons});
 
         // close button
         const btnClose = this._buildButton(cssMap.btnClose, this.close.bind(this));
@@ -201,27 +298,47 @@ export default class TmWindow {
         return wrap;
     }
 
-    private _buildButton(className, callback) {
-        const btn = create("button");
-        btn.tabIndex = -1;
-        btn.className = className;
+    /**
+     * create a single button
+     * @param className
+     * @param callback
+     * @private
+     */
+    private _buildButton(className: string, callback: () => any): HTMLButtonElement {
+        const btn = create("button", {
+            className,
+            tabIndex: -1,
+        });
         btn.addEventListener("click", callback);
         return btn;
     }
 
-    private _buildContent() {
-        const content = create("div");
-        content.className = cssMap.content;
-        content.innerHTML = this.getOption("content");
-        return content;
+    /**
+     * Create the content element a.k.a. the window body
+     * @private
+     */
+    private _buildContent(): HTMLDivElement {
+        const contentElement = create("div", {className: cssMap.content});
+
+        const content = this.getOption("content");
+        if (content instanceof HTMLElement) {
+            contentElement.appendChild(content);
+        } else {
+            contentElement.innerHTML = content;
+        }
+        return contentElement;
     }
 
-    private _addRepositionEvent(el) {
-        // const repo = function(e){console.log(e);};
+    /**
+     * Creates and binds the drag&drop events to move the window around
+     * @param el
+     * @private
+     */
+    private _addRepositionEvent(el: HTMLElement ) {
         const repo = this._repositionEvent.bind(this);
-        const md = this.mouseDownEv = {} as IMouseDownEventPositions;
+        const md: IMouseDownEventPositions = this.mouseDownEv = {};
 
-        el.addEventListener("mousedown", (event) => {
+        el.addEventListener("mousedown", (event: MouseEvent) => {
             if (this.isMinimized) {
                 return;
             }
@@ -246,7 +363,7 @@ export default class TmWindow {
         });
     }
 
-    private _repositionEvent(ev) {
+    private _repositionEvent(ev: MouseEvent) {
         const md = this.mouseDownEv;
         const dx = ev.pageX - md.x;
         const dy = ev.pageY - md.y;
