@@ -3,7 +3,7 @@ image: node:latest
 stages:
   - test
   - release
-  - pages
+  - deploy
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -36,9 +36,12 @@ publish:
   only:
     - master
 
-typedoc:
-  stage: pages
+pages:
+  stage: deploy
   cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
     policy: pull
   script:
     - yarn install
