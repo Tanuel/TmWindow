@@ -34,7 +34,11 @@ publish:
     paths:
       - public
   only:
-    - master
+    changes:
+      - src/ts/**/*
+      - src/scss/**/*
+    refs:
+      - master
 
 pages:
   stage: deploy
