@@ -13,8 +13,6 @@ cache:
 test:lint:
   stage: test
   script:
-    - npm prune
-    - npm install -g yarn
     - yarn install
     - yarn lint
   except:
@@ -25,8 +23,6 @@ publish:
   cache:
     policy: pull
   script:
-    - npm prune
-    - npm install -g yarn
     - yarn install
     - yarn build
     - yarn release
