@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://tanuel.gitlab.io/assets/css/tmstyle.css">
     <link rel="stylesheet" href="css/TmWindow.css">
     <link rel="stylesheet" href="css/docs.css">
+    <script src="https://tanuel.gitlab.io/assets/js/tmdocs.js"></script>
     <script src="js/TmWindow.js"></script>
     <script src="js/example.js"></script>
 </head>
@@ -18,11 +19,54 @@
 </ul>
 <hr>
 <p>This library allows to create a simple window</p>
-<p>Init with <code class="inline">let tmw = new TmWindow("My Window Title")</code></p>
-<p>
-    Open with <code class="inline">tmw.open()</code>
-    <button id="open-window">Click me to open :)</button>
-</p>
+<button id="open-window">Click me to open :)</button>
+<h3>Simple Usage</h3>
+<pre><code class="javascript">
+// create
+let tmw = new TmWindow("My Window Title");
+
+// set content
+// You can either pass a string or a node
+tmw.content = "My Window Content Lorem Ipsum";
+tmw.content = document.createElement("p");
+
+// show the window
+tmw.open();
+// close the window
+tmw.close();
+// minimize
+tmw.minimize();
+// remove the window element from the dom
+tmw.remove();
+</code></pre>
+
+<h3>Options</h3>
+<p>You can create the window with <a href="typedoc/interfaces/itmwindowoptions.html" target="_blank">options</a> instead of a title.</p>
+<p>All options are optional</p>
+<pre><code class="javascript">
+// create
+let tmw = new TmWindow({
+    title: "My Window",
+    content: "Window Content",
+    removeOnClose: false, // Don't remove the element from the DOM when closed
+    style: {
+        background: "green",
+    },
+    contain: true, // don't let the TmWindow move outside the Browserwindow
+    resizable: true,
+});
+
+// Get and set options
+tmw.setOption("removeOnClose", true)
+   .setOption("resizable", false);
+let option = tmw.getOption("removeOnClose");
+
+// Change default options (will not update existing windows)
+TmWindow.setDefaultOption("removeOnClose", true)
+        .setDefaultOption("resizable", false;
+let option = tmw.getDefaultOption("resizable");
+</code></pre>
+<b><a href="typedoc/interfaces/itmwindowoptions.html" target="_blank">Full Options reference</a></b>
 <hr>
 <table>
     <tr>
@@ -44,7 +88,7 @@
         </td>
         <td>
             Code:
-            <code>tmw.title = "my title"</code>
+            <code>tmw.content = "my title"</code>
         </td>
     </tr>
 </table>
