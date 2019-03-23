@@ -1,6 +1,6 @@
 {
   "name": "tmwindow",
-  "version": "0.0.0-dev",
+  "version": "1.0.3",
   "description": "Library for in-site JavaScript windows",
   "keywords": [
     "typescript",
@@ -57,7 +57,7 @@
     "build:docs": "grunt build:docs",
     "serve": "grunt serve",
     "release": "semantic-release",
-    "release:dry" :"semantic-release --dry-run"
+    "release:dry": "semantic-release --dry-run"
   },
   "release": {
     "branch": "master",
