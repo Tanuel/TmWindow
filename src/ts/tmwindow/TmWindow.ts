@@ -19,7 +19,7 @@ interface IMouseDownEventPositions {
 const defaultOptions: ITmWindowOptions = {
     contain: true,
     content: "",
-    destroyOnClose: false,
+    removeOnClose: false,
     resizable: true,
     style: {},
     title: "",
@@ -176,13 +176,13 @@ export default class TmWindow {
     }
 
     /**
-     * Close the window. If the option "destroyOnClose" is set to true,
+     * Close the window. If the option "removeOnClose" is set to true,
      * the window will be removed from the dom.
      * Current position will be preserved.
      * @param event
      */
     public close(event): this {
-        if (this.getOption("destroyOnClose")) {
+        if (this.getOption("removeOnClose")) {
             this.remove();
             event.stopImmediatePropagation();
         } else {
