@@ -56,7 +56,8 @@
     "build:dist": "grunt build:dist",
     "build:docs": "grunt build:docs",
     "serve": "grunt serve",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "release:dry" :"semantic-release --dry-run"
   },
   "release": {
     "branch": "master",
