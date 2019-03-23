@@ -16,6 +16,7 @@
     "./src/**/*.spec.ts"
   ],
   "typedocOptions": {
+    "name": "TmWindow",
     "mode": "file",
     "out": "public/typedoc",
     "readme": "Readme.md",
