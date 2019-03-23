@@ -23,6 +23,9 @@ test:lint:
 test:release:
   stage: test
   cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
     policy: pull
   script:
     - yarn install
@@ -39,6 +42,9 @@ test:release:
 publish:
   stage: release
   cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
     policy: pull
   script:
     - yarn install
