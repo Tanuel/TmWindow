@@ -18,7 +18,7 @@ using npm
 
 ## Usage
 
-TODO: Add more code examples
+[More examples here](https://tanuel.gitlab.io/tmwindow)
 
 ```JavaScript
 const TmWindow = require('tmwindow');
@@ -32,6 +32,6 @@ tmw.open();
 //close window
 tmw.close();
 
-//destroy dom element
-tmw.destroy();
+//remove dom element
+tmw.remove();
 ```
