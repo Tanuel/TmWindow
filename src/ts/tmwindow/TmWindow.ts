@@ -119,6 +119,13 @@ export default class TmWindow {
                     this.titleElement.innerHTML = value;
                 }
                 break;
+            case "content":
+                if (value instanceof HTMLElement) {
+                    empty(this.contentElement).appendChild(value);
+                } else {
+                    this.contentElement.innerHTML = value;
+                }
+                break;
             case "resizable":
                 this.domElement.classList.toggle(cssMap.resizable, !!value);
                 break;
