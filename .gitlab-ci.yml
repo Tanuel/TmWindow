@@ -50,4 +50,8 @@ pages:
     paths:
       - public
   only:
-    - master
+    changes:
+      - src/**/*
+      - Readme.md
+    refs:
+      - master
