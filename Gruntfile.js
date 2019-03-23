@@ -137,6 +137,12 @@ module.exports = function (grunt) {
             }
         },
         typedoc: {
+            dev:{
+                src: ['./src/ts/**/*.ts'],
+                options: {
+                    out: 'dev/typedoc',
+                }
+            },
             docs:{
                 src: ['./src/ts/**/*.ts']
             }
@@ -158,6 +164,7 @@ module.exports = function (grunt) {
         'browserify:dev',
         'sass:dev',
         'copy:dev',
+        'typedoc:dev',
     ]);
 
     grunt.registerTask('serve:dev', [
