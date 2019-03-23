@@ -13,7 +13,7 @@ export interface ITmWindowOptions {
     /**
      *  remove element from dom when close method gets called
      */
-    destroyOnClose?: boolean;
+    removeOnClose?: boolean;
     /**
      *  Make the window resizable (true) or fixed (false)
      */

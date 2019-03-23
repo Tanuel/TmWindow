@@ -15,16 +15,20 @@ interface IMouseDownEventPositions {
 
 /**
  * Default options used by TmWindow
+ * Override with TmWindow.setDefaultOption(key, value)
  */
 const defaultOptions: ITmWindowOptions = {
     contain: true,
     content: "",
-    destroyOnClose: false,
+    removeOnClose: false,
     resizable: true,
     style: {},
     title: "",
 };
 
+/**
+ * The TmWindow class
+ */
 export default class TmWindow {
 
     get isOpen(): boolean {
@@ -61,8 +65,8 @@ export default class TmWindow {
     }
 
     /**
-     * Set the y position (style.top)
-     * If a number is passed, it will be treated as a pixel value
+     * Set the y position (style.top).
+     * If a number is passed, it will be treated as a pixel value.
      * @param y
      */
     set y(y: string | number) {
@@ -76,20 +80,59 @@ export default class TmWindow {
     set content(content: ITmWindowOptions["content"]) {
         this.setOption("content", content);
     }
-    public static readonly defaultOptions: ITmWindowOptions = defaultOptions;
 
+    /**
+     * Get a default Option.
+     * @param name
+     */
     public static getDefaultOption<T extends keyof ITmWindowOptions>(name: T): ITmWindowOptions[T];
     public static getDefaultOption(name: keyof ITmWindowOptions) {
-        return TmWindow.defaultOptions[name];
+        return this.defaultOptions[name];
     }
 
+    /**
+     * Set a default option.
+     * This will not change the options on existing instances.
+     * @param name
+     * @param value
+     */
     // tslint:disable-next-line:max-line-length
     public static setDefaultOption<T extends keyof ITmWindowOptions>(name: T, value: ITmWindowOptions[T]): typeof TmWindow;
     public static setDefaultOption(name: keyof ITmWindowOptions, value: any): typeof TmWindow {
-        TmWindow.defaultOptions[name] = value;
-        return TmWindow;
+        this.defaultOptions[name] = value;
+        return this;
     }
 
+    /**
+     * Get a copy of all current default options
+     *
+     * It is recommended to not change the values in the returned object,
+     * but rather pass changes to TmWindow.setDefaultOption(s)
+     */
+    public static getDefaultOptions(): ITmWindowOptions {
+        return {...this.defaultOptions};
+    }
+
+    /**
+     * Set an object of default options.
+     *
+     * Options not set will stay at the previous values.
+     *
+     * This method will call setDefaultOption on every top level object entry.
+     * @param options
+     */
+    public static setDefaultOptions(options: ITmWindowOptions): typeof TmWindow {
+        each(options, (key: keyof ITmWindowOptions, value) => {
+           this.setDefaultOption(key, value);
+        });
+        return this;
+    }
+
+    private static readonly defaultOptions: ITmWindowOptions = defaultOptions;
+
+    /**
+     * The top level dom element from the window
+     */
     public readonly domElement: HTMLElement;
     private readonly options: ITmWindowOptions;
     private headerElement: HTMLElement;
@@ -98,6 +141,10 @@ export default class TmWindow {
     private lastStyle: any;
     private mouseDownEv: IMouseDownEventPositions;
 
+    /**
+     * Pass a string to be used as title or an object of options
+     * @param options
+     */
     constructor(options: ITmWindowOptions | string = {}) {
         if (typeof options === "object") {
             this.options = {...defaultOptions, ...options};
@@ -108,6 +155,11 @@ export default class TmWindow {
         document.body.appendChild(this.domElement);
     }
 
+    /**
+     * Change an option. Can be chained
+     * @param name
+     * @param value
+     */
     public setOption<T extends keyof ITmWindowOptions>(name: T, value: ITmWindowOptions[T]): this;
     public setOption(name: keyof ITmWindowOptions, value: any): this {
         this.options[name] = value;
@@ -119,6 +171,13 @@ export default class TmWindow {
                     this.titleElement.innerHTML = value;
                 }
                 break;
+            case "content":
+                if (value instanceof HTMLElement) {
+                    empty(this.contentElement).appendChild(value);
+                } else {
+                    this.contentElement.innerHTML = value;
+                }
+                break;
             case "resizable":
                 this.domElement.classList.toggle(cssMap.resizable, !!value);
                 break;
@@ -128,9 +187,39 @@ export default class TmWindow {
         return this;
     }
 
+    /**
+     * Get an option value
+     * @param name
+     */
     public getOption<T extends keyof ITmWindowOptions>(name: T): ITmWindowOptions[T];
     public getOption(name: keyof ITmWindowOptions) {
         return this.options[name];
+    }
+
+    /**
+     * Get a copy of all current options.
+     * It is important for options to be changed through this.setOption, so the reference to the instance
+     * options has to be somewhat removed.
+     *
+     * Change values from the returned object at your own risk!
+     */
+    public getOptions(): ITmWindowOptions {
+        return {...this.options};
+    }
+
+    /**
+     * Set an object of options.
+     *
+     * Options not set will stay at the previous values.
+     *
+     * This method will call setOption on every top level object entry.
+     * @param options
+     */
+    public setOptions(options: ITmWindowOptions): this {
+        each(options, (key: keyof ITmWindowOptions, value) => {
+            this.setOption(key, value);
+        });
+        return this;
     }
 
     public appendChild<T extends Node>(element: T): this {
@@ -169,13 +258,13 @@ export default class TmWindow {
     }
 
     /**
-     * Close the window. If the option "destroyOnClose" is set to true,
+     * Close the window. If the option "removeOnClose" is set to true,
      * the window will be removed from the dom.
      * Current position will be preserved.
      * @param event
      */
     public close(event): this {
-        if (this.getOption("destroyOnClose")) {
+        if (this.getOption("removeOnClose")) {
             this.remove();
             event.stopImmediatePropagation();
         } else {
@@ -363,6 +452,11 @@ export default class TmWindow {
         });
     }
 
+    /**
+     * Handler for reposition event.
+     * @param ev
+     * @private
+     */
     private _repositionEvent(ev: MouseEvent) {
         const md = this.mouseDownEv;
         const dx = ev.pageX - md.x;

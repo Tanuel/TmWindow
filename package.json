@@ -24,7 +24,9 @@
     "tmutil": "^1.0.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/commit-analyzer": "^6.1.0",
+    "@semantic-release/git": "^7.0.8",
     "@semantic-release/gitlab": "^3.1.2",
     "@semantic-release/npm": "^5.1.4",
     "@semantic-release/release-notes-generator": "^7.1.4",
@@ -54,7 +56,8 @@
     "build:dist": "grunt build:dist",
     "build:docs": "grunt build:docs",
     "serve": "grunt serve",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "release:dry" :"semantic-release --dry-run"
   },
   "release": {
     "branch": "master",
@@ -71,13 +74,19 @@
           ]
         }
       ],
-      "@semantic-release/npm"
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
     ],
     "analyzeCommits": {
       "releaseRules": [
         {
           "type": "MAJOR",
           "release": "major"
+        },
+        {
+          "type": "MINOR",
+          "release": "minor"
         },
         {
           "type": "FEATURE",

@@ -10,6 +10,7 @@ cache:
   paths:
     - node_modules/
 
+# Check if code style is okay
 test:lint:
   stage: test
   script:
@@ -18,6 +19,23 @@ test:lint:
   except:
     - tags
 
+# dry run of the release to verfiy everything works so far
+test:release:
+  stage: test
+  cache:
+    policy: pull
+  script:
+    - yarn install
+    - yarn build
+    - yarn release:dry
+  artifacts:
+    paths:
+      - public
+  only:
+    - refs
+    - master
+
+### Release to npm
 publish:
   stage: release
   cache:
@@ -36,6 +54,7 @@ publish:
     refs:
       - master
 
+### Create documentation
 pages:
   stage: deploy
   cache:
@@ -50,4 +69,8 @@ pages:
     paths:
       - public
   only:
-    - master
+    changes:
+      - src/**/*
+      - Readme.md
+    refs:
+      - master
