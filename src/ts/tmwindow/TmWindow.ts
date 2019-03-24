@@ -330,7 +330,7 @@ export default class TmWindow {
      * Current position will be preserved.
      */
     public minimize(): this {
-        if (this.isOpen) {
+        if (!this.isMinimized) {
             const de = this.domElement;
             const rect = de.getBoundingClientRect();
             this.lastStyle = {
@@ -345,8 +345,6 @@ export default class TmWindow {
             de.style.left = "";
             de.style.top = "";
             de.style.width = "";
-        } else {
-            this.open();
         }
         return this;
     }
