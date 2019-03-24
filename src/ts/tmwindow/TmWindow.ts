@@ -304,15 +304,13 @@ export default class TmWindow {
      * Close the window. If the option "removeOnClose" is set to true,
      * the window will be removed from the dom.
      * Current position will be preserved.
-     * @param event
      */
-    public close(event): this {
+    public close(): this {
+        this.domElement.classList.remove(cssMap.wrapperOpen);
+        this.domElement.classList.add(cssMap.wrapperClosed);
+
         if (this.options.removeOnClose) {
             this.remove();
-            event.stopImmediatePropagation();
-        } else {
-            this.domElement.classList.remove(cssMap.wrapperOpen);
-            this.domElement.classList.add(cssMap.wrapperClosed);
         }
         return this;
     }
