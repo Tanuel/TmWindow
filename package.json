@@ -13,7 +13,7 @@
   "types": "src/ts/index.d.ts",
   "style": "dist/css/TmWindow.css",
   "sass": "src/scss/main.scss",
-  "author": "Tanuel <tanuel.mategi@gmail.com> (https://tanuel.gitlab.io)",
+  "author": "Daniel Tanuel Schuster <tanuel.mategi@gmail.com> (https://tanuel.gitlab.io)",
   "license": "MIT",
   "repository": "gitlab:Tanuel/tmwindow",
   "homepage": "https://tanuel.gitlab.io/tmwindow",
