@@ -164,11 +164,12 @@ export default class TmWindow {
             this.options = {...defaultOptions, title: options};
         }
         this.domElement = this._buildWindow();
+        this.setOptions(this.options);
         document.body.appendChild(this.domElement);
     }
 
     /**
-     * Change an option. Can be chained
+     * Change an option. Can be chained.
      * @param name
      * @param value
      */
@@ -199,11 +200,18 @@ export default class TmWindow {
             case "id":
                 this.domElement.id = value;
                 break;
+            case "style":
+                each(value, (key, val) => {
+                    this.domElement.style[key] = val;
+                });
+                break;
             case "title":
                 if (value instanceof HTMLElement) {
                     empty(this.titleElement).appendChild(value);
+                    this.titleElement.title = value.textContent;
                 } else {
                     this.titleElement.innerHTML = value;
+                    this.titleElement.title = value;
                 }
                 break;
             case "resizable":
@@ -299,7 +307,7 @@ export default class TmWindow {
      * @param event
      */
     public close(event): this {
-        if (this.getOption("removeOnClose")) {
+        if (this.options.removeOnClose) {
             this.remove();
             event.stopImmediatePropagation();
         } else {
@@ -363,13 +371,8 @@ export default class TmWindow {
             style: {
                 left: "10px",
                 top: "10px",
-                ...this.options.style,
             },
         });
-
-        if (this.options.resizable) {
-            wrapper.classList.add(cssMap.resizable);
-        }
 
         const header = this.headerElement = this._buildHeader();
         const content = this.contentElement = this._buildContent();
@@ -386,15 +389,7 @@ export default class TmWindow {
      */
     private _buildHeader(): HTMLDivElement {
         const headerElement = create("div", {className: cssMap.header});
-        const title = this.getOption("title");
         const titleElement = this.titleElement = create("div", {className: cssMap.title});
-        if (title instanceof HTMLElement) {
-            titleElement.appendChild(title);
-            titleElement.title = title.textContent;
-        } else {
-            titleElement.innerHTML = title;
-            titleElement.title = title;
-        }
         this._addRepositionEvent(titleElement);
         // buttons
         const btns = this._buildHeaderButtons();
@@ -442,15 +437,7 @@ export default class TmWindow {
      * @private
      */
     private _buildContent(): HTMLDivElement {
-        const contentElement = create("div", {className: cssMap.content});
-
-        const content = this.getOption("content");
-        if (content instanceof HTMLElement) {
-            contentElement.appendChild(content);
-        } else {
-            contentElement.innerHTML = content;
-        }
-        return contentElement;
+        return create("div", {className: cssMap.content});
     }
 
     /**
