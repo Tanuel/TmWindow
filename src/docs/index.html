@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TmWindow - Tanuel</title>
+    <title>TmWindow - In-Browser Window Library by Tanuel</title>
     <link rel="stylesheet" href="https://tanuel.gitlab.io/assets/css/tmstyle.css">
     <link rel="stylesheet" href="css/TmWindow.css">
     <link rel="stylesheet" href="css/docs.css">
@@ -19,8 +19,33 @@
 </ul>
 <hr>
 <p>This library allows to create a simple window</p>
-<button id="open-window">Click me to open :)</button>
-<h3>Simple Usage</h3>
+<button id="open-window" class="btn">Click me to open :)</button>
+<h3>Simple Usage examples:</h3>
+<table>
+    <tr>
+        <td><label for="set-window-title">Set Title</label></td>
+        <td><input type="text" id="set-window-title"></td>
+        <td>
+            <button id="apply-window-title" class="btn">Apply</button>
+        </td>
+        <td>
+            Code example:
+            <code>tmw.title = "My title"</code>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="set-window-content">Set Content</label></td>
+        <td><textarea id="set-window-content"></textarea></td>
+        <td>
+            <button id="apply-window-content" class="btn">Apply</button>
+        </td>
+        <td>
+            Code example:
+            <code>tmw.content = "My content that also allows <b>html</b>"</code>
+        </td>
+    </tr>
+</table>
+<hr>
 <pre><code class="javascript">
 // create
 let tmw = new TmWindow("My Window Title");
@@ -42,7 +67,7 @@ tmw.remove();
 
 <h3>Options</h3>
 <p>You can create the window with <a href="typedoc/interfaces/itmwindowoptions.html" target="_blank">options</a> instead of a title.</p>
-<p>All options are optional</p>
+<p>All options are optional (badum tss). <a href="typedoc/interfaces/itmwindowoptions.html" target="_blank">Option Reference</a></p>
 <pre><code class="javascript">
 // create
 let tmw = new TmWindow({
@@ -66,32 +91,6 @@ TmWindow.setDefaultOption("removeOnClose", true)
         .setDefaultOption("resizable", false;
 let option = tmw.getDefaultOption("resizable");
 </code></pre>
-<b><a href="typedoc/interfaces/itmwindowoptions.html" target="_blank">Full Options reference</a></b>
-<hr>
-<table>
-    <tr>
-        <td><label for="set-window-title">Set Title</label></td>
-        <td><input type="text" id="set-window-title"></td>
-        <td>
-            <button id="apply-window-title">Apply</button>
-        </td>
-        <td>
-            Code:
-            <code>tmw.title = "my title"</code>
-        </td>
-    </tr>
-    <tr>
-        <td><label for="set-window-content">Set Content</label></td>
-        <td><textarea id="set-window-content"></textarea></td>
-        <td>
-            <button id="apply-window-content">Apply</button>
-        </td>
-        <td>
-            Code:
-            <code>tmw.content = "my title"</code>
-        </td>
-    </tr>
-</table>
-<a href="typedoc">➡ Full API Reference ⬅</a>
+<p><b><a href="typedoc">➡ Full API Reference ⬅</a></b></p>
 </body>
 </html>
