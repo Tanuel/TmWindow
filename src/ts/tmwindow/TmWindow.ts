@@ -301,6 +301,22 @@ export default class TmWindow {
     }
 
     /**
+     * Switch state between open and closed.
+     * Pass a string to force an action (can also minimize this way).
+     * @param action
+     */
+    public toggle(action: "open"|"minimize"|"close"): this {
+        if (!this.isOpen || action === "open") {
+            this.open();
+        } else if (action === "minimize") {
+            this.minimize();
+        } else {
+            this.close();
+        }
+        return this;
+    }
+
+    /**
      * Close the window. If the option "removeOnClose" is set to true,
      * the window will be removed from the dom.
      * Current position will be preserved.
