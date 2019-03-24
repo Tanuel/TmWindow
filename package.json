@@ -24,12 +24,9 @@
     "tmutil": "^1.0.0"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^3.0.2",
     "@semantic-release/commit-analyzer": "^6.1.0",
-    "@semantic-release/git": "^7.0.8",
     "@semantic-release/gitlab": "^3.1.2",
     "@semantic-release/npm": "^5.1.4",
-    "@semantic-release/release-notes-generator": "^7.1.4",
     "browserify": "^16.2.3",
     "grunt": "^1.0.3",
     "grunt-browserify": "^5.3.0",
@@ -63,7 +60,6 @@
     "branch": "master",
     "plugins": [
       "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
       [
         "@semantic-release/gitlab",
         {
@@ -74,9 +70,7 @@
           ]
         }
       ],
-      "@semantic-release/changelog",
-      "@semantic-release/npm",
-      "@semantic-release/git"
+      "@semantic-release/npm"
     ],
     "analyzeCommits": {
       "releaseRules": [
