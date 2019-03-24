@@ -369,15 +369,15 @@ export default class TmWindow {
      * @private
      */
     private _buildHeader(): HTMLDivElement {
-        // _headerElement element
         const headerElement = create("div", {className: cssMap.header});
-        // title element
         const title = this.getOption("title");
         const titleElement = this.titleElement = create("div", {className: cssMap.title});
         if (title instanceof HTMLElement) {
             titleElement.appendChild(title);
+            titleElement.title = title.textContent;
         } else {
             titleElement.innerHTML = title;
+            titleElement.title = title;
         }
         this._addRepositionEvent(titleElement);
         // buttons
