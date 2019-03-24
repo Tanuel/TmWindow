@@ -18,8 +18,10 @@ interface IMouseDownEventPositions {
  * Override with TmWindow.setDefaultOption(key, value)
  */
 const defaultOptions: ITmWindowOptions = {
+    className: "",
     contain: true,
     content: "",
+    id: "",
     removeOnClose: false,
     resizable: true,
     style: {},
@@ -162,13 +164,16 @@ export default class TmWindow {
      */
     public setOption<T extends keyof ITmWindowOptions>(name: T, value: ITmWindowOptions[T]): this;
     public setOption(name: keyof ITmWindowOptions, value: any): this {
-        this.options[name] = value;
+        // Apply option first in case we need the old value
         switch (name) {
-            case "title":
-                if (value instanceof HTMLElement) {
-                    empty(this.titleElement).appendChild(value);
-                } else {
-                    this.titleElement.innerHTML = value;
+            case "className":
+                // remove previous class
+                if (this.options.className.length > 0) {
+                    this.domElement.classList.remove(this.options.className);
+                }
+                // Add new class
+                if (value.length > 0) {
+                    this.domElement.classList.add(value);
                 }
                 break;
             case "content":
@@ -178,12 +183,26 @@ export default class TmWindow {
                     this.contentElement.innerHTML = value;
                 }
                 break;
+            case "id":
+                this.domElement.id = value;
+                break;
+            case "title":
+                if (value instanceof HTMLElement) {
+                    empty(this.titleElement).appendChild(value);
+                } else {
+                    this.titleElement.innerHTML = value;
+                }
+                break;
             case "resizable":
                 this.domElement.classList.toggle(cssMap.resizable, !!value);
                 break;
             default:
                 break;
         }
+
+        // Store option
+        this.options[name] = value;
+
         return this;
     }
 
