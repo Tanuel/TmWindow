@@ -1,8 +1,16 @@
 document.addEventListener('DOMContentLoaded', function(){
-    let tmw = new TmWindow("My Window Title");
+    let rect = document.body.getBoundingClientRect();
+    let tmwX = rect.x + rect.width - 400;
 
-    tmw.setPosition(window.innerWidth - 800,200);
-    //tmw.open();
+    let tmw = new TmWindow({
+        title: "Hello World!",
+        content: "You should totally try to drag this window around by dragging the top bar!",
+        width: 300,
+        height:200,
+    });
+
+    tmw.setPosition(tmwX,5);
+    tmw.open();
     let openBtn = document.getElementById('open-window');
     openBtn.addEventListener('click', tmw.open.bind(tmw));
 

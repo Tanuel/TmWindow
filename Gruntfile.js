@@ -71,7 +71,6 @@ module.exports = function (grunt) {
                 },
                 files: {
                     '<%=dev%>/css/<%=projectName%>.css': '<%=src%>/scss/main.scss',
-                    '<%=dev%>/css/docs.css': '<%=src%>/docs/scss/docs.scss',
                 },
             },
             docs: {
@@ -81,7 +80,6 @@ module.exports = function (grunt) {
                 },
                 files: {
                     '<%=docs%>/css/<%=projectName%>.css': '<%=src%>/scss/main.scss',
-                    '<%=docs%>/css/docs.css': '<%=src%>/docs/scss/docs.scss',
                 },
             },
             dist: {

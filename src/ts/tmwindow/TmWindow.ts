@@ -18,8 +18,10 @@ interface IMouseDownEventPositions {
  * Override with TmWindow.setDefaultOption(key, value)
  */
 const defaultOptions: ITmWindowOptions = {
+    className: "",
     contain: true,
     content: "",
+    id: "",
     removeOnClose: false,
     resizable: true,
     style: {},
@@ -51,6 +53,16 @@ export default class TmWindow {
         this.setOption("title", title);
     }
 
+    get height(): number {
+        return this.domElement.offsetHeight;
+    }
+    set height(height: number) {
+        this.domElement.style.height = height + "px";
+    }
+
+    get width(): number {
+        return this.domElement.offsetWidth;
+    }
     set width(width: number) {
         this.domElement.style.width = width + "px";
     }
@@ -152,23 +164,27 @@ export default class TmWindow {
             this.options = {...defaultOptions, title: options};
         }
         this.domElement = this._buildWindow();
+        this.setOptions(this.options);
         document.body.appendChild(this.domElement);
     }
 
     /**
-     * Change an option. Can be chained
+     * Change an option. Can be chained.
      * @param name
      * @param value
      */
     public setOption<T extends keyof ITmWindowOptions>(name: T, value: ITmWindowOptions[T]): this;
     public setOption(name: keyof ITmWindowOptions, value: any): this {
-        this.options[name] = value;
+        // Apply option first in case we need the old value
         switch (name) {
-            case "title":
-                if (value instanceof HTMLElement) {
-                    empty(this.titleElement).appendChild(value);
-                } else {
-                    this.titleElement.innerHTML = value;
+            case "className":
+                // remove previous class
+                if (this.options.className.length > 0) {
+                    this.domElement.classList.remove(this.options.className);
+                }
+                // Add new class
+                if (value.length > 0) {
+                    this.domElement.classList.add(value);
                 }
                 break;
             case "content":
@@ -178,12 +194,39 @@ export default class TmWindow {
                     this.contentElement.innerHTML = value;
                 }
                 break;
+            case "height":
+                this.height = value;
+                break;
+            case "id":
+                this.domElement.id = value;
+                break;
+            case "style":
+                each(value, (key, val) => {
+                    this.domElement.style[key] = val;
+                });
+                break;
+            case "title":
+                if (value instanceof HTMLElement) {
+                    empty(this.titleElement).appendChild(value);
+                    this.titleElement.title = value.textContent;
+                } else {
+                    this.titleElement.innerHTML = value;
+                    this.titleElement.title = value;
+                }
+                break;
             case "resizable":
                 this.domElement.classList.toggle(cssMap.resizable, !!value);
+                break;
+            case "width":
+                this.width = value;
                 break;
             default:
                 break;
         }
+
+        // Store option
+        this.options[name] = value;
+
         return this;
     }
 
@@ -258,18 +301,32 @@ export default class TmWindow {
     }
 
     /**
+     * Switch state between open and closed.
+     * Pass a string to force an action (can also minimize this way).
+     * @param action
+     */
+    public toggle(action: "open"|"minimize"|"close"): this {
+        if (!this.isOpen || action === "open") {
+            this.open();
+        } else if (action === "minimize") {
+            this.minimize();
+        } else {
+            this.close();
+        }
+        return this;
+    }
+
+    /**
      * Close the window. If the option "removeOnClose" is set to true,
      * the window will be removed from the dom.
      * Current position will be preserved.
-     * @param event
      */
-    public close(event): this {
-        if (this.getOption("removeOnClose")) {
+    public close(): this {
+        this.domElement.classList.remove(cssMap.wrapperOpen);
+        this.domElement.classList.add(cssMap.wrapperClosed);
+
+        if (this.options.removeOnClose) {
             this.remove();
-            event.stopImmediatePropagation();
-        } else {
-            this.domElement.classList.remove(cssMap.wrapperOpen);
-            this.domElement.classList.add(cssMap.wrapperClosed);
         }
         return this;
     }
@@ -287,7 +344,7 @@ export default class TmWindow {
      * Current position will be preserved.
      */
     public minimize(): this {
-        if (this.isOpen) {
+        if (!this.isMinimized) {
             const de = this.domElement;
             const rect = de.getBoundingClientRect();
             this.lastStyle = {
@@ -302,8 +359,6 @@ export default class TmWindow {
             de.style.left = "";
             de.style.top = "";
             de.style.width = "";
-        } else {
-            this.open();
         }
         return this;
     }
@@ -328,13 +383,8 @@ export default class TmWindow {
             style: {
                 left: "10px",
                 top: "10px",
-                ...this.options.style,
             },
         });
-
-        if (this.options.resizable) {
-            wrapper.classList.add(cssMap.resizable);
-        }
 
         const header = this.headerElement = this._buildHeader();
         const content = this.contentElement = this._buildContent();
@@ -350,16 +400,8 @@ export default class TmWindow {
      * @private
      */
     private _buildHeader(): HTMLDivElement {
-        // _headerElement element
         const headerElement = create("div", {className: cssMap.header});
-        // title element
-        const title = this.getOption("title");
         const titleElement = this.titleElement = create("div", {className: cssMap.title});
-        if (title instanceof HTMLElement) {
-            titleElement.appendChild(title);
-        } else {
-            titleElement.innerHTML = title;
-        }
         this._addRepositionEvent(titleElement);
         // buttons
         const btns = this._buildHeaderButtons();
@@ -407,15 +449,7 @@ export default class TmWindow {
      * @private
      */
     private _buildContent(): HTMLDivElement {
-        const contentElement = create("div", {className: cssMap.content});
-
-        const content = this.getOption("content");
-        if (content instanceof HTMLElement) {
-            contentElement.appendChild(content);
-        } else {
-            contentElement.innerHTML = content;
-        }
-        return contentElement;
+        return create("div", {className: cssMap.content});
     }
 
     /**
