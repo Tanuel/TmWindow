@@ -53,6 +53,16 @@ export default class TmWindow {
         this.setOption("title", title);
     }
 
+    get height(): number {
+        return this.domElement.offsetHeight;
+    }
+    set height(height: number) {
+        this.domElement.style.height = height + "px";
+    }
+
+    get width(): number {
+        return this.domElement.offsetWidth;
+    }
     set width(width: number) {
         this.domElement.style.width = width + "px";
     }
@@ -183,6 +193,9 @@ export default class TmWindow {
                     this.contentElement.innerHTML = value;
                 }
                 break;
+            case "height":
+                this.height = value;
+                break;
             case "id":
                 this.domElement.id = value;
                 break;
@@ -195,6 +208,9 @@ export default class TmWindow {
                 break;
             case "resizable":
                 this.domElement.classList.toggle(cssMap.resizable, !!value);
+                break;
+            case "width":
+                this.width = value;
                 break;
             default:
                 break;
