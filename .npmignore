@@ -9,3 +9,8 @@
 /tslint.json
 /yarn.lock
 /yarn-error.log
+
+# ignore .ts files
+/src/ts/**/*.ts
+# include the .d.ts files
+!/src/ts/**/*.d.ts

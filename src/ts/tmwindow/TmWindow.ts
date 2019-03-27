@@ -306,7 +306,7 @@ export default class TmWindow {
      * @param action
      */
     public toggle(action: "open"|"minimize"|"close"): this {
-        if (!this.isOpen || action === "open") {
+        if (!this.isOpen || action === "open" || this.isMinimized && action === "minimize") {
             this.open();
         } else if (action === "minimize") {
             this.minimize();
@@ -424,7 +424,7 @@ export default class TmWindow {
         wrap.appendChild(btnClose);
 
         // minimize button
-        const btnMin = this._buildButton(cssMap.btnMinimize, this.minimize.bind(this));
+        const btnMin = this._buildButton(cssMap.btnMinimize, this.toggle.bind(this, "minimize"));
         wrap.appendChild(btnMin);
         return wrap;
     }
@@ -461,29 +461,31 @@ export default class TmWindow {
         const repo = this._repositionEvent.bind(this);
         const md: IMouseDownEventPositions = this.mouseDownEv = {};
 
-        el.addEventListener("mousedown", (event: MouseEvent) => {
+        const repoEventListener = (ev: MouseEvent|TouchEvent) => {
             if (this.isMinimized) {
                 return;
             }
-            event.preventDefault();
+            ev.preventDefault();
             clearSelection();
-            md.x = event.pageX;
-            md.y = event.pageY;
+            md.x = ev instanceof TouchEvent ? ev.touches[0].clientX : ev.pageX;
+            md.y = ev instanceof TouchEvent ? ev.touches[0].clientY : ev.pageY;
             const rect = this.domElement.getBoundingClientRect();
             md.top = rect.top;
             md.left = rect.left;
             this.domElement.classList.add(cssMap.grabbed);
-            window.addEventListener("mousemove", repo);
-        });
+            window.addEventListener(ev instanceof TouchEvent ? "touchmove" : "mousemove", repo);
+        };
+        el.addEventListener("mousedown", repoEventListener);
+        el.addEventListener("touchstart", repoEventListener);
 
-        window.addEventListener("mouseup", () => {
+        const repoEventRemover = () => {
             this.domElement.classList.remove(cssMap.grabbed);
             window.removeEventListener("mousemove", repo);
-        });
-        document.addEventListener("mouseleave", () => {
-            this.domElement.classList.remove(cssMap.grabbed);
-            window.removeEventListener("mousemove", repo);
-        });
+            window.removeEventListener("touchmove", repo);
+        };
+        window.addEventListener("mouseup", repoEventRemover);
+        window.addEventListener("touchend", repoEventRemover);
+        document.addEventListener("mouseleave", repoEventRemover);
     }
 
     /**
@@ -491,12 +493,12 @@ export default class TmWindow {
      * @param ev
      * @private
      */
-    private _repositionEvent(ev: MouseEvent) {
+    private _repositionEvent(ev: MouseEvent | TouchEvent) {
         const md = this.mouseDownEv;
-        const dx = ev.pageX - md.x;
-        const dy = ev.pageY - md.y;
-        const newX = md.left + dx;
-        const newY = md.top + dy;
+        const dx = ev instanceof TouchEvent ? ev.touches[0].clientX : ev.pageX;
+        const dy = ev instanceof TouchEvent ? ev.touches[0].clientY : ev.pageY;
+        const newX = md.left + dx - md.x;
+        const newY = md.top + dy - md.y;
         const de = this.domElement;
         const rect = de.getBoundingClientRect();
 

@@ -156,7 +156,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-typedoc');
 
-    // Default task(s).
     grunt.registerTask('build:dev', [
         'clean:dev',
         'browserify:dev',

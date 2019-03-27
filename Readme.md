@@ -4,6 +4,7 @@
 
 # TmWindow
 
+[➡ Project Page ⬅](https://tanuel.gitlab.io/tmwindow/)
 [➡ Full API Reference (TypeDoc) ⬅](https://tanuel.gitlab.io/tmwindow/typedoc/)
 
 ## Install
@@ -20,7 +21,7 @@ using npm
 
 [More examples here](https://tanuel.gitlab.io/tmwindow)
 
-```JavaScript
+```javascript
 const TmWindow = require('tmwindow');
 
 //create window
