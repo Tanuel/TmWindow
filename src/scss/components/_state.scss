@@ -12,7 +12,9 @@
     box-shadow: none;
     width: auto;
     bottom: 0;
-
+    &.#{$wrapper}-resizable {
+      resize: none;
+    }
     .#{$wrapper}-content {
       display:none;
     }
