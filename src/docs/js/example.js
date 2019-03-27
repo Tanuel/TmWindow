@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
     let tmw = new TmWindow({
         title: "Hello World!",
-        content: "You should totally try to drag this window around by dragging the top bar!",
+        content: "You should totally try to drag this window around by dragging the top bar! " +
+            "Also, visit me on <a href='https://www.npmjs.com/package/tmwindow' target='_blank'>npm</a>!",
         width: 300,
         height:200,
     });

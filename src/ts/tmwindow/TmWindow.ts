@@ -306,7 +306,7 @@ export default class TmWindow {
      * @param action
      */
     public toggle(action: "open"|"minimize"|"close"): this {
-        if (!this.isOpen || action === "open") {
+        if (!this.isOpen || action === "open" || this.isMinimized && action === "minimize") {
             this.open();
         } else if (action === "minimize") {
             this.minimize();
@@ -424,7 +424,7 @@ export default class TmWindow {
         wrap.appendChild(btnClose);
 
         // minimize button
-        const btnMin = this._buildButton(cssMap.btnMinimize, this.minimize.bind(this));
+        const btnMin = this._buildButton(cssMap.btnMinimize, this.toggle.bind(this, "minimize"));
         wrap.appendChild(btnMin);
         return wrap;
     }
