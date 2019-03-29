@@ -9,8 +9,10 @@
 /tslint.json
 /yarn.lock
 /yarn-error.log
+/coverage
+/jest.config.js
 
 # ignore .ts files
 /src/ts/**/*.ts
-# include the .d.ts files
+# include .d.ts files
 !/src/ts/**/*.d.ts

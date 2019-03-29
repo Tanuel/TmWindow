@@ -37,7 +37,7 @@ export interface ITmWindowOptions {
      *  Note: Changing these later via setOption("style", ...) will NOT remove previously set styles
      *  to prevent unintended behaviour. If you want to unset a style, set it to an empty string.
      */
-    style?: object;
+    style?: Partial<CSSStyleDeclaration>;
     /**
      *  Window title. Can be a string (added as innerHTML) or HTMLElement (appended to title element)
      */
