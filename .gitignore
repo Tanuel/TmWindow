@@ -5,6 +5,7 @@
 /.idea
 /.tscache
 /yarn-error.log
+/coverage
 /src/ts/**/*.js
 /src/ts/**/*.js.map
 /src/ts/**/*.d.ts

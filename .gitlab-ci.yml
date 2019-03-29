@@ -10,12 +10,19 @@ cache:
   paths:
     - node_modules/
 
-# Check if code style is okay
-test:lint:
+lint:ts:
   stage: test
   script:
     - yarn install
     - yarn lint
+  except:
+    - tags
+
+test:ts:
+  stage: test
+  script:
+    - yarn install
+    - yarn test
   except:
     - tags
 
