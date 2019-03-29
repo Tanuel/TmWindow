@@ -56,6 +56,7 @@ export default class TmWindow {
     get height(): number {
         return this.domElement.offsetHeight;
     }
+
     set height(height: number) {
         this.domElement.style.height = height + "px";
     }
@@ -63,6 +64,7 @@ export default class TmWindow {
     get width(): number {
         return this.domElement.offsetWidth;
     }
+
     set width(width: number) {
         this.domElement.style.width = width + "px";
     }
@@ -98,6 +100,7 @@ export default class TmWindow {
      * @param name
      */
     public static getDefaultOption<T extends keyof ITmWindowOptions>(name: T): ITmWindowOptions[T];
+
     public static getDefaultOption(name: keyof ITmWindowOptions) {
         return this.defaultOptions[name];
     }
@@ -110,6 +113,7 @@ export default class TmWindow {
      */
     // tslint:disable-next-line:max-line-length
     public static setDefaultOption<T extends keyof ITmWindowOptions>(name: T, value: ITmWindowOptions[T]): typeof TmWindow;
+
     public static setDefaultOption(name: keyof ITmWindowOptions, value: any): typeof TmWindow {
         this.defaultOptions[name] = value;
         return this;
@@ -135,13 +139,12 @@ export default class TmWindow {
      */
     public static setDefaultOptions(options: ITmWindowOptions): typeof TmWindow {
         each(options, (key: keyof ITmWindowOptions, value) => {
-           this.setDefaultOption(key, value);
+            this.setDefaultOption(key, value);
         });
         return this;
     }
 
     private static readonly defaultOptions: ITmWindowOptions = defaultOptions;
-
     /**
      * The top level dom element from the window
      */
@@ -180,11 +183,15 @@ export default class TmWindow {
             case "className":
                 // remove previous class
                 if (this.options.className.length > 0) {
-                    this.domElement.classList.remove(this.options.className);
+                    this.options.className.split(" ").forEach((cl) => {
+                        this.domElement.classList.remove(cl);
+                    });
                 }
                 // Add new class
                 if (value.length > 0) {
-                    this.domElement.classList.add(value);
+                    (value as string).split(" ").forEach((cl) => {
+                        this.domElement.classList.add(cl);
+                    });
                 }
                 break;
             case "content":
@@ -279,8 +286,8 @@ export default class TmWindow {
      * @param y
      */
     public setPosition(x: string | number, y: string | number): this {
-        this.domElement.style.left = typeof x === "string" ? x : x + "px";
-        this.domElement.style.top = typeof y === "string" ? y : y + "px";
+        this.x = x;
+        this.y = y;
         return this;
     }
 
@@ -305,8 +312,10 @@ export default class TmWindow {
      * Pass a string to force an action (can also minimize this way).
      * @param action
      */
-    public toggle(action: "open"|"minimize"|"close"): this {
-        if (!this.isOpen || action === "open" || this.isMinimized && action === "minimize") {
+    public toggle(action?: "open" | "minimize" | "close"): this {
+        if (action === "open"
+            || action !== "minimize" && action !== "close" && !this.isOpen
+        ) {
             this.open();
         } else if (action === "minimize") {
             this.minimize();
@@ -322,7 +331,7 @@ export default class TmWindow {
      * Current position will be preserved.
      */
     public close(): this {
-        this.domElement.classList.remove(cssMap.wrapperOpen);
+        this.domElement.classList.remove(cssMap.wrapperOpen, cssMap.wrapperMinimized);
         this.domElement.classList.add(cssMap.wrapperClosed);
 
         if (this.options.removeOnClose) {
@@ -457,11 +466,11 @@ export default class TmWindow {
      * @param el
      * @private
      */
-    private _addRepositionEvent(el: HTMLElement ) {
+    private _addRepositionEvent(el: HTMLElement) {
         const repo = this._repositionEvent.bind(this);
         const md: IMouseDownEventPositions = this.mouseDownEv = {};
 
-        const repoEventListener = (ev: MouseEvent|TouchEvent) => {
+        const repoEventListener = (ev: MouseEvent | TouchEvent) => {
             if (this.isMinimized) {
                 return;
             }
