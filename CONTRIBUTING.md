@@ -14,11 +14,13 @@ build for dev
 
     yarn dev
 
-run test environment under *localhost:9001* (opens automatically with livereload)
+run test environment under `localhost:9001` (opens automatically with livereload)
 
     yarn serve
     
 ## Commiting
+
+Prefix commits according to the semantic release prefixes defined in package.json
 
 Write simple commit messages like 
 * Fix {bug description}

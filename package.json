@@ -45,7 +45,7 @@
     "tsify": "^4.0.1",
     "tslint": "^5.13.1",
     "typedoc": "^0.14.2",
-    "typescript": "^3.3.3333",
+    "typescript": "~3.4.0",
     "watchify": "^3.11.1"
   },
   "scripts": {
@@ -104,5 +104,9 @@
         }
       ]
     }
+  },
+  "resolutions": {
+    "marked": "0.7.0",
+    "handlebars": "4.1.2"
   }
 }
