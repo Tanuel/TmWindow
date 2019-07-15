@@ -64,6 +64,7 @@ publish:
     changes:
       - src/ts/**/*
       - src/scss/**/*
+      - yarn.lock
     refs:
       - master
 
