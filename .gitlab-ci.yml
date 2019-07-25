@@ -61,10 +61,6 @@ publish:
     paths:
       - public
   only:
-    changes:
-      - src/ts/**/*
-      - src/scss/**/*
-      - yarn.lock
     refs:
       - master
 
@@ -83,8 +79,5 @@ pages:
     paths:
       - public
   only:
-    changes:
-      - src/**/*
-      - Readme.md
     refs:
       - master
