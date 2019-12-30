@@ -115,7 +115,7 @@ export default class TmWindow {
     public static setDefaultOption<T extends keyof ITmWindowOptions>(name: T, value: ITmWindowOptions[T]): typeof TmWindow;
 
     public static setDefaultOption(name: keyof ITmWindowOptions, value: any): typeof TmWindow {
-        this.defaultOptions[name] = value;
+        (this.defaultOptions[name] as any) = value;
         return this;
     }
 
@@ -232,7 +232,7 @@ export default class TmWindow {
         }
 
         // Store option
-        this.options[name] = value;
+        (this.options[name] as any) = value;
 
         return this;
     }
